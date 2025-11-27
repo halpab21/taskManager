@@ -1,7 +1,11 @@
 package com.example.taskmanager.model;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class Task {
     private Long id;
+
+    @NotBlank(message = "title must not be blank")
     private String title;
     private String description;
     private boolean completed;
@@ -47,4 +51,3 @@ public class Task {
         this.completed = completed;
     }
 }
-
