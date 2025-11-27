@@ -1,7 +1,7 @@
 package com.example.taskmanager.controller;
 
 import com.example.taskmanager.model.Task;
-import com.example.taskmanager.repository.TaskRepository;
+//import com.example.taskmanager.repository.TaskRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,17 +23,20 @@ class TaskControllerIT {
     @Autowired
     private MockMvc mvc;
 
+    /*
     @Autowired(required = false)
     private TaskRepository repo; // optional: repo may not exist in this project; controller uses in-memory service
+    /**/
 
     @Autowired
     private ObjectMapper om;
 
+    /*
     @BeforeEach
     void clean() {
         // If a JPA repository exists, clear it; otherwise nothing to do because service is in-memory
         if (repo != null) repo.deleteAll();
-    }
+    }/**/
 
     @Test
     void getAll_returnsOk() throws Exception {
