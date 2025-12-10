@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/frontend1/frontend1.iml" filepath="$PROJECT_DIR$/frontend1/frontend1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/taskManager.iml" filepath="$PROJECT_DIR$/.idea/taskManager.iml" />
+    </modules>
+  </component>
+</project>

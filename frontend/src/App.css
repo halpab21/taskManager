@@ -1,0 +1,165 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    min-height: 100vh;
+    width: 100vw;
+    background: linear-gradient(to bottom right, #d9f0e5, #c2f4e1, #b2f0f0);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px;
+}
+
+.dashboard {
+    width: 800px;
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+header h1 {
+    margin: 0;
+    color: #047857;
+}
+
+.add-btn {
+    font-size: 24px;
+    padding: 6px 12px;
+    background: #10b981;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.add-btn:hover {
+    background: #059669;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+th, td {
+    padding: 10px;
+    border-bottom: 1px solid #d1fae5;
+}
+
+th {
+    text-align: left;
+    color: #065f46;
+}
+
+.check-btn {
+    width: 40px;
+    height: 40px;
+    border: 2px solid #10b981;
+    border-radius: 4px;
+    background: none;
+    cursor: pointer;
+}
+
+.check-btn:hover {
+    background: #d1fae5;
+}
+
+.check-btn.checked {
+    background: #10b981;
+    color: white;
+    font-weight: bold;
+}
+
+.completed {
+    text-decoration: line-through;
+    color: #6b7280;
+}
+
+.divider {
+    height: 4px;
+    width: 100%;
+    background: linear-gradient(to right, #10b981, #059669);
+    margin: 30px 0;
+    border-radius: 2px;
+}
+
+/* Modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+.modal {
+    background: white;
+    border-radius: 16px;
+    padding: 30px;
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.modal h2 {
+    margin-top: 0;
+    color: #047857;
+}
+
+.modal input,
+.modal textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 2px solid #10b981;
+    border-radius: 8px;
+}
+
+.modal textarea {
+    height: 80px;
+    resize: none;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.modal-buttons button {
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.modal-buttons button:first-child {
+    background: #d1d5db;
+}
+
+.modal-buttons button:last-child {
+    background: #10b981;
+    color: white;
+}
+
+.modal-buttons button:last-child:hover {
+    background: #059669;
+}
