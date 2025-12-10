@@ -1,0 +1,7 @@
+at/halasi/backend/TaskApplication.class
+at/halasi/backend/TaskService.class
+at/halasi/backend/TaskDTO.class
+at/halasi/backend/TaskRepository.class
+at/halasi/backend/TaskController.class
+at/halasi/backend/Task.class
+at/halasi/backend/Task$TaskBuilder.class
