@@ -4,7 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9da65c7c-59d5-4977-8368-2dfacfb7c9d1" name="Changes" comment="new backend" />
+    <list default="true" id="9da65c7c-59d5-4977-8368-2dfacfb7c9d1" name="Changes" comment="new backend">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/java/at/halasi/backend/BackendApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/test/java/at/halasi/backend/BackendApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/target/surefire-reports/TEST-at.halasi.backend.BackendApplicationTests.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/surefire-reports/TEST-at.halasi.backend.BackendApplicationTests.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/target/surefire-reports/TEST-at.halasi.backend.TaskServiceTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/surefire-reports/TEST-at.halasi.backend.TaskServiceTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/target/surefire-reports/at.halasi.backend.BackendApplicationTests.txt" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/surefire-reports/at.halasi.backend.BackendApplicationTests.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/target/surefire-reports/at.halasi.backend.TaskServiceTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/surefire-reports/at.halasi.backend.TaskServiceTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/target/test-classes/at/halasi/backend/BackendApplicationTests.class" beforeDir="false" afterPath="$PROJECT_DIR$/backend/target/test-classes/at/halasi/backend/BackendApplicationTests.class" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -39,7 +47,7 @@
     "git-widget-placeholder": "main",
     "junie.onboarding.icon.badge.shown": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/home/patyo/Projects/school/Syp/TaskManagement",
+    "last_opened_file_path": "/home/patyo/Projects/school/Syp/TaskManagement/backend",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -95,7 +103,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1765397873534</updated>
-      <workItem from="1765397874754" duration="2961000" />
+      <workItem from="1765397874754" duration="5010000" />
     </task>
     <task id="LOCAL-00001" summary="asd">
       <option name="closed" value="true" />
@@ -121,7 +129,23 @@
       <option name="project" value="LOCAL" />
       <updated>1765401170534</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="new backend">
+      <option name="closed" value="true" />
+      <created>1765401268703</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1765401268703</updated>
+    </task>
+    <task id="LOCAL-00005" summary="new backend">
+      <option name="closed" value="true" />
+      <created>1765401275556</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1765401275556</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
