@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 import mockdata from "./mockdata/mockdata.ts";
+import type {CreatePost} from "./interfaces/interface.ts";
 
 interface Task {
     id: number;
@@ -15,6 +16,7 @@ export default function App() {
     const [newTitle, setNewTitle] = useState("");
     const [newDescription, setNewDescription] = useState("");
 
+
     const toggleTask = (id: number) => {
         setTasks((prev) => {
             const updated = prev.map((t) =>
@@ -26,7 +28,7 @@ export default function App() {
         });
     };
 
-    const addTask = () => {
+    const addTask = async () => {
         if (!newTitle.trim()) return;
         const newTask: Task = {
             id: Date.now(),
@@ -34,10 +36,38 @@ export default function App() {
             description: newDescription,
             completed: false,
         };
-        setTasks((prev) => [...prev, newTask]);
-        setNewTitle("");
-        setNewDescription("");
-        setShowModal(false);
+
+        const data: CreatePost = {
+            title: newTitle,
+            description: newDescription,
+        }
+
+        try {
+            const res = await fetch("http://localhost:8080/task", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            });
+
+            // HTTP status check
+            if (!res.ok) {
+                const text = await res.text();
+                throw new Error(`Server error ${res.status}: ${text}`);
+            }
+
+            const createdTask = await res.json();
+
+            setTasks((prev) => [...prev, createdTask]);
+            setNewTitle("");
+            setNewDescription("");
+            setShowModal(false);
+
+        } catch (err) {
+            console.error("Fehler beim Erstellen der Task:", err);
+            alert("Task konnte nicht erstellt werden. Details siehe Konsole.");
+        }
     };
 
     const incompleteTasks = tasks.filter((t) => !t.completed);
@@ -48,7 +78,7 @@ export default function App() {
             <div className="dashboard">
                 <header>
                     <h1>Task Dashboard</h1>
-                    <button className="add-btn" onClick={() => setShowModal(true)}>
+                    <button className="add-btn" id="openPopupBtn" onClick={() => setShowModal(true)}>
                         +
                     </button>
                 </header>
@@ -113,23 +143,25 @@ export default function App() {
             </div>
 
             {showModal && (
-                <div className="modal-overlay">
+                <div className="modal-overlay" id="myPopup">
                     <div className="modal">
                         <h2>Neue Task hinzufügen</h2>
                         <input
+                            id="textField1"
                             type="text"
                             placeholder="Titel"
                             value={newTitle}
                             onChange={(e) => setNewTitle(e.target.value)}
                         />
-                        <textarea
+                        <input
+                            id="textField2"
                             placeholder="Beschreibung"
                             value={newDescription}
                             onChange={(e) => setNewDescription(e.target.value)}
                         />
                         <div className="modal-buttons">
                             <button onClick={() => setShowModal(false)}>Abbrechen</button>
-                            <button onClick={addTask}>Hinzufügen</button>
+                            <button onClick={addTask} id="submitPopupBtn">Hinzufügen</button>
                         </div>
                     </div>
                 </div>
