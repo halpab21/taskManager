@@ -9,6 +9,11 @@ interface Task {
     completed: boolean;
 }
 
+interface CreatePost {
+    title: string;
+    description: string;
+}
+
 export default function App() {
     const [tasks, setTasks] = useState<Task[]>(mockdata);
     const [showModal, setShowModal] = useState(false);
@@ -26,7 +31,7 @@ export default function App() {
         });
     };
 
-    const addTask = () => {
+    const addTask= async () => {
         if (!newTitle.trim()) return;
         const newTask: Task = {
             id: Date.now(),
@@ -34,6 +39,17 @@ export default function App() {
             description: newDescription,
             completed: false,
         };
+        let data: CreatePost = {
+            title: "testTitle",
+            description: "#SYP#",
+        }
+        const res = await fetch("http://localhost:8080/task", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        });
         setTasks((prev) => [...prev, newTask]);
         setNewTitle("");
         setNewDescription("");
@@ -48,7 +64,7 @@ export default function App() {
             <div className="dashboard">
                 <header>
                     <h1>Task Dashboard</h1>
-                    <button className="add-btn" onClick={() => setShowModal(true)}>
+                    <button className="add-btn" id="openPopupBtn" onClick={() => setShowModal(true)}>
                         +
                     </button>
                 </header>
@@ -113,11 +129,12 @@ export default function App() {
             </div>
 
             {showModal && (
-                <div className="modal-overlay">
+                <div className="modal-overlay" id="myPopup">
                     <div className="modal">
                         <h2>Neue Task hinzufügen</h2>
                         <input
                             type="text"
+                            id="textField1"
                             placeholder="Titel"
                             value={newTitle}
                             onChange={(e) => setNewTitle(e.target.value)}
@@ -125,11 +142,12 @@ export default function App() {
                         <textarea
                             placeholder="Beschreibung"
                             value={newDescription}
+                            id="textField2"
                             onChange={(e) => setNewDescription(e.target.value)}
                         />
                         <div className="modal-buttons">
                             <button onClick={() => setShowModal(false)}>Abbrechen</button>
-                            <button onClick={addTask}>Hinzufügen</button>
+                            <button onClick={addTask} id="submitPopupBtn">Hinzufügen</button>
                         </div>
                     </div>
                 </div>

@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/tasks")
 public class TaskController {
 
     private final TaskService taskService;
@@ -28,7 +27,7 @@ public class TaskController {
                 : ResponseEntity.notFound().build();
     }
 
-    @PostMapping
+    @PostMapping("/task")
     public ResponseEntity<Task> createTask(@RequestBody TaskDTO dto) {
         return ResponseEntity.ok(taskService.createTask(dto));
     }
