@@ -7,6 +7,10 @@ on:
     branches: [ "main" ]
 
 jobs:
+
+  # ----------------------------------------------------------
+  # BACKEND TESTS (unit + integration)
+  # ----------------------------------------------------------
   backend-tests:
     runs-on: ubuntu-latest
 
@@ -30,7 +34,12 @@ jobs:
         working-directory: backend
         run: mvn clean verify
 
-  cypress-test:
+
+
+  # ----------------------------------------------------------
+  # CYPRESS E2E TESTS WITH VITE DEV SERVER (SOLUTION A)
+  # ----------------------------------------------------------
+  cypress-e2e:
     runs-on: ubuntu-latest
     needs: backend-tests
 
@@ -54,7 +63,7 @@ jobs:
       SPRING_DATASOURCE_USERNAME: admin
       SPRING_DATASOURCE_PASSWORD: admin
       SPRING_JPA_HIBERNATE_DDL_AUTO: create
-      CYPRESS_BASE_URL: http://localhost:8080
+      CYPRESS_BASE_URL: http://localhost:5173
 
     steps:
       - name: Checkout code
@@ -65,56 +74,94 @@ jobs:
         with:
           node-version: 20
 
+      # Install frontend dependencies
       - name: Install frontend deps
         working-directory: frontend
         run: npm ci
 
+      # Build backend jar
       - name: Build backend JAR
         working-directory: backend
         run: mvn -q -DskipTests package
 
+      # Start backend on port 8080
       - name: Start backend
         working-directory: backend
         run: |
           nohup java -jar target/*.jar > ../backend.log 2>&1 &
           echo $! > ../backend.pid
 
-      - name: Wait for backend to be ready
+      # Wait for backend to be ready
+      - name: Wait for backend readiness
         run: |
           for i in {1..60}; do
-            if curl -sf $CYPRESS_BASE_URL > /dev/null; then
-              echo "Backend is up!"
-              break
+            if curl -s http://localhost:8080 > /dev/null; then
+              echo "Backend is UP"
+              exit 0
             fi
             echo "Waiting for backend ($i/60)..."
             sleep 1
           done
+          echo "Backend did NOT start. Dumping logs:"
+          cat backend.log
+          exit 1
 
-      - name: Run Cypress tests
+      # Start Vite dev server on port 5173
+      - name: Start Vite dev server
         working-directory: frontend
+        run: |
+          nohup npm run dev -- --host > ../vite.log 2>&1 &
+          echo $! > ../vite.pid
+
+      # Wait for Vite to be ready
+      - name: Wait for Vite server readiness
+        run: |
+          for i in {1..60}; do
+            if curl -s http://localhost:5173 > /dev/null; then
+              echo "Vite frontend is UP"
+              exit 0
+            fi
+            echo "Waiting for Vite dev server ($i/60)..."
+            sleep 1
+          done
+          echo "Vite did NOT start. Dumping logs:"
+          cat frontend/vite.log
+          exit 1
+
+      # Run Cypress tests against Vite + backend
+      - name: Run Cypress Tests
+        working-directory: frontend
+        env:
+          CYPRESS_BASE_URL: http://localhost:5173
         run: |
           npx cypress install
           npx cypress run --config baseUrl=$CYPRESS_BASE_URL
 
+      # Upload Cypress artifacts
       - name: Upload Cypress Artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: cypress-artifacts
+          name: cypress-results
           path: |
             frontend/cypress/screenshots
             frontend/cypress/videos
 
-      - name: Stop backend
+      # Stop backend + frontend
+      - name: Stop running servers
         if: always()
         run: |
-          if [ -f backend.pid ]; then kill $(ca
-  
-  
+          if [ -f backend.pid ]; then kill $(cat backend.pid) || true; fi
+          if [ -f frontend/vite.pid ]; then kill $(cat frontend/vite.pid) || true; fi
 
+
+
+  # ----------------------------------------------------------
+  # DOCKER BUILD + PUSH
+  # ----------------------------------------------------------
   docker-build:
     runs-on: ubuntu-latest
-    needs: cypress-test
+    needs: cypress-e2e
 
     steps:
       - name: Checkout code
@@ -133,7 +180,7 @@ jobs:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build Docker Image (task-manager)
+      - name: Build Docker Image
         run: |
           docker build -t $DOCKER_USER_SAFE/task-manager:latest .
 
