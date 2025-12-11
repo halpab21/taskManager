@@ -1,1 +1,44 @@
-.idea/*
+### ROOT
+.DS_Store
+.idea/
+*.log
+*.tmp
+*.temp
+
+### BACKEND (Spring Boot + Maven)
+backend/target/
+backend/.mvn/
+backend/*.iml
+backend/.classpath
+backend/.project
+backend/.settings/
+backend/testcontainers.properties
+backend/.tc/
+
+### FRONTEND (Vite + Node + Cypress)
+frontend/node_modules/
+frontend/dist/
+frontend/.nyc_output/
+frontend/coverage/
+frontend/.eslintcache
+frontend/*.tsbuildinfo
+frontend/node_modules/.vite/
+
+# Cypress artifacts
+frontend/cypress/videos/
+frontend/cypress/screenshots/
+
+### ENVIRONMENT FILES
+**/.env
+**/.env.*.local
+
+### EDITORS
+.vscode/
+*.iml
+
+### DOCKER
+docker-data/
+*.pid
+
+### GIT MERGE TRASH
+*.orig

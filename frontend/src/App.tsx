@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {useState} from "react";
 import "./App.css";
 import mockdata from "./mockdata/mockdata.ts";
 import type {CreatePost} from "./interfaces/interface.ts";
@@ -19,12 +19,9 @@ export default function App() {
 
     const toggleTask = (id: number) => {
         setTasks((prev) => {
-            const updated = prev.map((t) =>
-                t.id === id ? { ...t, completed: !t.completed } : t
+            return prev.map((t) =>
+                t.id === id ? {...t, completed: !t.completed} : t
             );
-            const incomplete = updated.filter((t) => !t.completed);
-            const complete = updated.filter((t) => t.completed);
-            return [...incomplete, ...complete];
         });
     };
 
@@ -64,8 +61,25 @@ export default function App() {
         }
     };
 
-    const incompleteTasks = tasks.filter((t) => !t.completed);
-    const completeTasks = tasks.filter((t) => t.completed);
+    const renderTask = (task: Task) => {
+        return (
+            <div
+                key={task.id}
+                className={`task-card ${task.completed ? "task-card-checked" : ""}`}
+            >
+                <button
+                    className={`check-btn ${task.completed ? "checked" : ""}`}
+                    onClick={() => toggleTask(task.id)}
+                >
+                </button>
+
+                <div className="task-content">
+                    <h3 className="task-title">{task.title}</h3>
+                    <p className="task-desc">{task.description}</p>
+                </div>
+            </div>
+        );
+    };
 
     return (
         <div className="container">
@@ -78,59 +92,13 @@ export default function App() {
                 </header>
 
                 <section>
-                    <h2>Offen</h2>
                     <table>
-                        <thead>
-                        <tr>
-                            <th></th>
-                            <th>Titel</th>
-                            <th>Beschreibung</th>
-                        </tr>
-                        </thead>
                         <tbody>
-                        {incompleteTasks.map((task) => (
-                            <tr key={task.id}>
-                                <td>
-                                    <button
-                                        className="check-btn"
-                                        onClick={() => toggleTask(task.id)}
-                                    ></button>
-                                </td>
-                                <td>{task.title}</td>
-                                <td>{task.description}</td>
-                            </tr>
-                        ))}
-                        </tbody>
-                    </table>
-                </section>
-
-                <div className="divider"></div>
-
-                <section>
-                    <h2>Erledigt</h2>
-                    <table>
-                        <thead>
-                        <tr>
-                            <th></th>
-                            <th>Titel</th>
-                            <th>Beschreibung</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {completeTasks.map((task) => (
-                            <tr key={task.id}>
-                                <td>
-                                    <button
-                                        className="check-btn checked"
-                                        onClick={() => toggleTask(task.id)}
-                                    >
-                                        ✓
-                                    </button>
-                                </td>
-                                <td className="completed">{task.title}</td>
-                                <td className="completed">{task.description}</td>
-                            </tr>
-                        ))}
+                        {
+                            [...tasks]
+                            .sort((a, b) => Number(a.completed) - Number(b.completed))
+                            .map(renderTask)
+                        }
                         </tbody>
                     </table>
                 </section>
