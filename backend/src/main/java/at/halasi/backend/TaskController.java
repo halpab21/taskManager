@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 public class TaskController {
 
@@ -13,6 +14,12 @@ public class TaskController {
     public TaskController(TaskService taskService) {
         this.taskService = taskService;
     }
+
+    @GetMapping("favicon.ico")
+    public void ignoreFavicon() {
+
+    }
+
 
     @GetMapping
     public ResponseEntity<List<Task>> getAllTasks() {
