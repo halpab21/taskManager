@@ -30,12 +30,6 @@ export default function App() {
 
     const addTask = async () => {
         if (!newTitle.trim()) return;
-        const newTask: Task = {
-            id: Date.now(),
-            title: newTitle,
-            description: newDescription,
-            completed: false,
-        };
 
         const data: CreatePost = {
             title: newTitle,
