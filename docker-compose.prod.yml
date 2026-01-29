@@ -1,19 +1,6 @@
 version: '3.8'
 
-# =============================================================================
-# Task Manager - Production Docker Compose
-# =============================================================================
-# Quick Start:
-#   1. Download this file
-#   2. Edit the 'image' field below with your Docker Hub username
-#   3. Run: docker-compose -f docker-compose.prod.yml up -d
-#   4. Open http://localhost:8080
-# =============================================================================
-
 services:
-  # ---------------------------------------------------------------------------
-  # PostgreSQL Database
-  # ---------------------------------------------------------------------------
   db:
     image: postgres:16-alpine
     container_name: taskmanager-db
@@ -30,11 +17,7 @@ services:
       retries: 5
     restart: unless-stopped
 
-  # ---------------------------------------------------------------------------
-  # Task Manager Application (Backend + Frontend)
-  # ---------------------------------------------------------------------------
   app:
-    # ⚠️ CHANGE THIS to your Docker Hub username/task-manager:latest
     image: halpab21/task-manager:latest
     container_name: taskmanager-app
     ports:
@@ -48,8 +31,17 @@ services:
       db:
         condition: service_healthy
     restart: unless-stopped
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 300 --cleanup --label-enable
+    restart: unless-stopped
 
 volumes:
   taskmanager_data:
     name: taskmanager_data
-
