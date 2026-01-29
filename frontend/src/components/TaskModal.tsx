@@ -36,8 +36,8 @@ export default function TaskModal({
     };
 
     return (
-        <div className="modal-overlay" onClick={onClose}>
-            <div className="modal-container" onClick={(e) => e.stopPropagation()}>
+        <div className="modal-overlay" data-testid="modal-overlay" onClick={onClose}>
+            <div className="modal-container" data-testid="modal-container" onClick={(e) => e.stopPropagation()}>
                 <div className="modal-header">
                     <h2>Create New Task</h2>
                     <button className="modal-close" onClick={onClose}>✕</button>
@@ -48,6 +48,7 @@ export default function TaskModal({
                         <label htmlFor="title">Title</label>
                         <input
                             id="title"
+                            data-testid="task-title-input"
                             type="text"
                             placeholder="Enter task title..."
                             value={title}
@@ -60,6 +61,7 @@ export default function TaskModal({
                         <label htmlFor="description">Description</label>
                         <textarea
                             id="description"
+                            data-testid="task-description-input"
                             placeholder="Enter task description..."
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
@@ -72,6 +74,7 @@ export default function TaskModal({
                             <label htmlFor="priority">Priority</label>
                             <select
                                 id="priority"
+                                data-testid="task-priority-select"
                                 value={priority}
                                 onChange={(e) => setPriority(e.target.value as Priority)}
                             >
@@ -85,6 +88,7 @@ export default function TaskModal({
                             <label htmlFor="deadline">Deadline</label>
                             <input
                                 id="deadline"
+                                data-testid="task-deadline-input"
                                 type="date"
                                 value={deadline}
                                 onChange={(e) => setDeadline(e.target.value)}
@@ -93,10 +97,10 @@ export default function TaskModal({
                     </div>
 
                     <div className="modal-actions">
-                        <button type="button" className="btn btn-secondary" onClick={onClose}>
+                        <button type="button" className="btn btn-secondary" data-testid="cancel-btn" onClick={onClose}>
                             Cancel
                         </button>
-                        <button type="submit" className="btn btn-primary">
+                        <button type="submit" className="btn btn-primary" data-testid="submit-task-btn">
                             Create Task
                         </button>
                     </div>

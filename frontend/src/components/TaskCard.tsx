@@ -31,9 +31,10 @@ export default function TaskCard({ task, onToggle, onDelete }: TaskCardProps) {
     };
 
     return (
-        <div className={`task-card ${task.completed ? 'task-completed' : ''}`}>
+        <div className={`task-card ${task.completed ? 'task-completed' : ''}`} data-testid="task-card">
             <button
                 className={`task-checkbox ${task.completed ? 'checked' : ''}`}
+                data-testid="task-checkbox"
                 onClick={(e) => {
                     e.stopPropagation();
                     onToggle(task.id);
@@ -45,14 +46,14 @@ export default function TaskCard({ task, onToggle, onDelete }: TaskCardProps) {
 
             <div className="task-body">
                 <div className="task-header">
-                    <h3 className="task-title">{task.title}</h3>
-                    <span className={`priority-badge ${getPriorityClass(task.priority)}`}>
+                    <h3 className="task-title" data-testid="task-title">{task.title}</h3>
+                    <span className={`priority-badge ${getPriorityClass(task.priority)}`} data-testid="task-priority">
                         {getPriorityLabel(task.priority)}
                     </span>
                 </div>
-                <p className="task-description">{task.description}</p>
+                <p className="task-description" data-testid="task-description">{task.description}</p>
                 {task.deadline && (
-                    <div className="task-deadline">
+                    <div className="task-deadline" data-testid="task-deadline">
                         <span className="deadline-icon">📅</span>
                         <span>{formatDate(task.deadline)}</span>
                     </div>
@@ -62,6 +63,7 @@ export default function TaskCard({ task, onToggle, onDelete }: TaskCardProps) {
             {onDelete && (
                 <button
                     className="delete-btn"
+                    data-testid="delete-task-btn"
                     onClick={(e) => {
                         e.stopPropagation();
                         onDelete(task.id);

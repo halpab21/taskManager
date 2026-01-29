@@ -112,7 +112,7 @@ export default function Dashboard({ tasks, setTasks }: DashboardProps) {
                     <h1>Dashboard</h1>
                     <p className="subtitle">Manage your tasks efficiently</p>
                 </div>
-                <button className="add-task-btn" onClick={() => setShowModal(true)}>
+                <button className="add-task-btn" data-testid="add-task-btn" onClick={() => setShowModal(true)}>
                     <span>+</span> New Task
                 </button>
             </header>
