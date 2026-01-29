@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TaskController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">backend</a> &gt; <a href="index.source.html" class="el_package">at.halasi.backend</a> &gt; <span class="el_source">TaskController.java</span></div><h1>TaskController.java</h1><pre class="source lang-java linenums">package at.halasi.backend;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@CrossOrigin(origins = &quot;http://localhost:5173&quot;)
+@RestController
+public class TaskController {
+
+    private final TaskService taskService;
+
+<span class="fc" id="L14">    public TaskController(TaskService taskService) {</span>
+<span class="fc" id="L15">        this.taskService = taskService;</span>
+<span class="fc" id="L16">    }</span>
+
+    @GetMapping(&quot;favicon.ico&quot;)
+    public void ignoreFavicon() {
+
+<span class="nc" id="L21">    }</span>
+
+
+    @GetMapping
+    public ResponseEntity&lt;List&lt;Task&gt;&gt; getAllTasks() {
+<span class="fc" id="L26">        return ResponseEntity.ok(taskService.getAllTasks());</span>
+    }
+
+    @GetMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;Task&gt; getTaskById(@PathVariable Long id) {
+<span class="fc" id="L31">        Task task = taskService.getTaskById(id);</span>
+<span class="fc bfc" id="L32" title="All 2 branches covered.">        return task != null</span>
+<span class="fc" id="L33">                ? ResponseEntity.ok(task)</span>
+<span class="fc" id="L34">                : ResponseEntity.notFound().build();</span>
+    }
+
+    @PostMapping(&quot;/task&quot;)
+    public ResponseEntity&lt;Task&gt; createTask(@RequestBody TaskDTO dto) {
+<span class="fc" id="L39">        return ResponseEntity.ok(taskService.createTask(dto));</span>
+    }
+
+    @PutMapping(&quot;/task/{id}&quot;)
+    public ResponseEntity&lt;Task&gt; updateTask(@PathVariable Long id, @RequestBody TaskDTO dto) {
+<span class="fc" id="L44">        Task task = taskService.updateTask(id, dto);</span>
+<span class="fc bfc" id="L45" title="All 2 branches covered.">        return task != null</span>
+<span class="fc" id="L46">                ? ResponseEntity.ok(task)</span>
+<span class="fc" id="L47">                : ResponseEntity.notFound().build();</span>
+    }
+
+    @PatchMapping(&quot;/task/{id}/toggle&quot;)
+    public ResponseEntity&lt;Task&gt; toggleTaskCompleted(@PathVariable Long id) {
+<span class="fc" id="L52">        Task task = taskService.toggleTaskCompleted(id);</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">        return task != null</span>
+<span class="fc" id="L54">                ? ResponseEntity.ok(task)</span>
+<span class="fc" id="L55">                : ResponseEntity.notFound().build();</span>
+    }
+
+    @DeleteMapping(&quot;/task/{id}&quot;)
+    public ResponseEntity&lt;Void&gt; deleteTask(@PathVariable Long id) {
+<span class="fc bfc" id="L60" title="All 2 branches covered.">        return taskService.deleteTask(id)</span>
+<span class="fc" id="L61">                ? ResponseEntity.noContent().build()</span>
+<span class="fc" id="L62">                : ResponseEntity.notFound().build();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TaskController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">backend</a> &gt; <a href="index.source.html" class="el_package">at.halasi.backend</a> &gt; <span class="el_source">TaskController.java</span></div><h1>TaskController.java</h1><pre class="source lang-java linenums">package at.halasi.backend;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@CrossOrigin(origins = &quot;http://localhost:5173&quot;)
+@RestController
+public class TaskController {
+
+    private final TaskService taskService;
+
+<span class="nc" id="L14">    public TaskController(TaskService taskService) {</span>
+<span class="nc" id="L15">        this.taskService = taskService;</span>
+<span class="nc" id="L16">    }</span>
+
+    @GetMapping(&quot;favicon.ico&quot;)
+    public void ignoreFavicon() {
+
+<span class="nc" id="L21">    }</span>
+
+
+    @GetMapping
+    public ResponseEntity&lt;List&lt;Task&gt;&gt; getAllTasks() {
+<span class="nc" id="L26">        return ResponseEntity.ok(taskService.getAllTasks());</span>
+    }
+
+    @GetMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;Task&gt; getTaskById(@PathVariable Long id) {
+<span class="nc" id="L31">        Task task = taskService.getTaskById(id);</span>
+<span class="nc bnc" id="L32" title="All 2 branches missed.">        return task != null</span>
+<span class="nc" id="L33">                ? ResponseEntity.ok(task)</span>
+<span class="nc" id="L34">                : ResponseEntity.notFound().build();</span>
+    }
+
+    @PostMapping(&quot;/task&quot;)
+    public ResponseEntity&lt;Task&gt; createTask(@RequestBody TaskDTO dto) {
+<span class="nc" id="L39">        return ResponseEntity.ok(taskService.createTask(dto));</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
