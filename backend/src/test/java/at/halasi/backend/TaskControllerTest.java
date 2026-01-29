@@ -60,7 +60,7 @@ class TaskControllerTest {
 
         when(taskService.getTaskById(1L)).thenReturn(task);
 
-        mockMvc.perform(get("/1"))
+        mockMvc.perform(get("/task/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.title").value("Task"))
                 .andExpect(jsonPath("$.priority").value("SOMETIME_IN_FUTURE"));
@@ -70,7 +70,7 @@ class TaskControllerTest {
     void getTaskById_notFound() throws Exception {
         when(taskService.getTaskById(999L)).thenReturn(null);
 
-        mockMvc.perform(get("/999"))
+        mockMvc.perform(get("/task/999"))
                 .andExpect(status().isNotFound());
     }
 

@@ -21,7 +21,7 @@ A full-stack task management application with React frontend and Spring Boot bac
 
 **Step 1:** Download the docker-compose file
 ```bash
-curl -O https://raw.githubusercontent.com/halpab21/syp/main/docker-compose.prod.yml
+curl -O https://raw.githubusercontent.com/halpab21/taskManager/main/docker-compose.prod.yml
 ```
 
 **Step 2:** Start the application
