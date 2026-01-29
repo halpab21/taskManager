@@ -1,0 +1,148 @@
+.task-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 20px;
+    background: linear-gradient(135deg, #2d2040 0%, #1f1a2e 100%);
+    border: 1px solid rgba(138, 43, 226, 0.15);
+    border-radius: 16px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.task-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(124, 58, 237, 0.2);
+    border-color: rgba(138, 43, 226, 0.3);
+}
+
+.task-card.task-completed {
+    opacity: 0.6;
+    background: linear-gradient(135deg, #252030 0%, #1a1520 100%);
+}
+
+.task-card.task-completed .task-title {
+    text-decoration: line-through;
+    color: #6b5b7a;
+}
+
+.task-checkbox {
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    border: 2px solid #7c3aed;
+    border-radius: 8px;
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    margin-top: 2px;
+}
+
+.task-checkbox:hover {
+    background: rgba(124, 58, 237, 0.2);
+}
+
+.task-checkbox.checked {
+    background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+    border-color: #a855f7;
+}
+
+.checkmark {
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.task-body {
+    flex: 1;
+    min-width: 0;
+}
+
+.task-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+}
+
+.task-title {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #e9e4f0;
+}
+
+.priority-badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.priority-asap {
+    background: rgba(239, 68, 68, 0.2);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.priority-soon {
+    background: rgba(251, 191, 36, 0.2);
+    color: #fbbf24;
+    border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+.priority-sometime {
+    background: rgba(34, 197, 94, 0.2);
+    color: #4ade80;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.task-description {
+    margin: 0 0 10px 0;
+    color: #9d8bb0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.task-deadline {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background: rgba(124, 58, 237, 0.15);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: #c4b5fd;
+}
+
+.deadline-icon {
+    font-size: 0.9rem;
+}
+
+.delete-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: transparent;
+    border: none;
+    font-size: 1.1rem;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    padding: 4px;
+}
+
+.task-card:hover .delete-btn {
+    opacity: 0.6;
+}
+
+.delete-btn:hover {
+    opacity: 1 !important;
+}
+

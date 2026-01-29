@@ -25,8 +25,39 @@ public class TaskService {
                 .title(taskDTO.title())
                 .description(taskDTO.description())
                 .completed(false)
+                .priority(taskDTO.priority() != null ? taskDTO.priority() : Priority.SOMETIME_IN_FUTURE)
+                .deadline(taskDTO.deadline())
                 .build();
 
         return taskRepository.save(task);
+    }
+
+    public Task updateTask(Long id, TaskDTO taskDTO) {
+        Task task = taskRepository.findById(id).orElse(null);
+        if (task == null) {
+            return null;
+        }
+        task.setTitle(taskDTO.title());
+        task.setDescription(taskDTO.description());
+        task.setPriority(taskDTO.priority());
+        task.setDeadline(taskDTO.deadline());
+        return taskRepository.save(task);
+    }
+
+    public Task toggleTaskCompleted(Long id) {
+        Task task = taskRepository.findById(id).orElse(null);
+        if (task == null) {
+            return null;
+        }
+        task.setCompleted(!task.isCompleted());
+        return taskRepository.save(task);
+    }
+
+    public boolean deleteTask(Long id) {
+        if (taskRepository.existsById(id)) {
+            taskRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 }

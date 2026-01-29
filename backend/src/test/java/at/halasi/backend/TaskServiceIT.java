@@ -4,6 +4,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -26,9 +27,9 @@ class TaskServiceIT extends AbstractPostgresIT {
     void createMultipleTasks_andFetchAll_andFetchById() {
 
         // ✅ 1️⃣ Create multiple tasks via REAL service
-        var dto1 = new TaskDTO("Task One", "First description");
-        var dto2 = new TaskDTO("Task Two", "Second description");
-        var dto3 = new TaskDTO("Task Three", "Third description");
+        var dto1 = new TaskDTO("Task One", "First description", Priority.ASAP, LocalDate.of(2026, 2, 15));
+        var dto2 = new TaskDTO("Task Two", "Second description", Priority.SOON, null);
+        var dto3 = new TaskDTO("Task Three", "Third description", Priority.SOMETIME_IN_FUTURE, LocalDate.of(2026, 6, 1));
 
         var t1 = taskService.createTask(dto1);
         var t2 = taskService.createTask(dto2);
@@ -38,6 +39,12 @@ class TaskServiceIT extends AbstractPostgresIT {
         assertThat(t1.getId()).isNotNull();
         assertThat(t2.getId()).isNotNull();
         assertThat(t3.getId()).isNotNull();
+
+        // ✅ Verify priority and deadline were saved
+        assertThat(t1.getPriority()).isEqualTo(Priority.ASAP);
+        assertThat(t1.getDeadline()).isEqualTo(LocalDate.of(2026, 2, 15));
+        assertThat(t2.getPriority()).isEqualTo(Priority.SOON);
+        assertThat(t2.getDeadline()).isNull();
 
         // ✅ 3️⃣ Fetch ALL tasks via service
         List<Task> allTasks = taskService.getAllTasks();
@@ -55,6 +62,7 @@ class TaskServiceIT extends AbstractPostgresIT {
         assertThat(fetched.getTitle()).isEqualTo("Task Two");
         assertThat(fetched.getDescription()).isEqualTo("Second description");
         assertThat(fetched.isCompleted()).isFalse();
+        assertThat(fetched.getPriority()).isEqualTo(Priority.SOON);
 
         // ✅ 5️⃣ Double check DB contents directly (safety net)
         List<Task> fromDb = taskRepository.findAll();

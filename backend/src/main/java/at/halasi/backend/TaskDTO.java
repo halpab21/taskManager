@@ -1,3 +1,5 @@
 package at.halasi.backend;
 
-public record TaskDTO(String title, String description) {}
+import java.time.LocalDate;
+
+public record TaskDTO(String title, String description, Priority priority, LocalDate deadline) {}

@@ -38,4 +38,27 @@ public class TaskController {
     public ResponseEntity<Task> createTask(@RequestBody TaskDTO dto) {
         return ResponseEntity.ok(taskService.createTask(dto));
     }
+
+    @PutMapping("/task/{id}")
+    public ResponseEntity<Task> updateTask(@PathVariable Long id, @RequestBody TaskDTO dto) {
+        Task task = taskService.updateTask(id, dto);
+        return task != null
+                ? ResponseEntity.ok(task)
+                : ResponseEntity.notFound().build();
+    }
+
+    @PatchMapping("/task/{id}/toggle")
+    public ResponseEntity<Task> toggleTaskCompleted(@PathVariable Long id) {
+        Task task = taskService.toggleTaskCompleted(id);
+        return task != null
+                ? ResponseEntity.ok(task)
+                : ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("/task/{id}")
+    public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
+        return taskService.deleteTask(id)
+                ? ResponseEntity.noContent().build()
+                : ResponseEntity.notFound().build();
+    }
 }

@@ -1,4 +1,7 @@
-/home/patyo/Projects/school/Syp/TaskManagement/backend/src/test/java/at/halasi/backend/AbstractPostgresIT.java
-/home/patyo/Projects/school/Syp/TaskManagement/backend/src/test/java/at/halasi/backend/BackendApplicationTests.java
-/home/patyo/Projects/school/Syp/TaskManagement/backend/src/test/java/at/halasi/backend/TaskServiceIT.java
-/home/patyo/Projects/school/Syp/TaskManagement/backend/src/test/java/at/halasi/backend/TaskServiceTest.java
+/home/patyo/school/syp/backend/src/test/java/at/halasi/backend/AbstractPostgresIT.java
+/home/patyo/school/syp/backend/src/test/java/at/halasi/backend/BackendApplicationTests.java
+/home/patyo/school/syp/backend/src/test/java/at/halasi/backend/PriorityTest.java
+/home/patyo/school/syp/backend/src/test/java/at/halasi/backend/TaskControllerTest.java
+/home/patyo/school/syp/backend/src/test/java/at/halasi/backend/TaskServiceIT.java
+/home/patyo/school/syp/backend/src/test/java/at/halasi/backend/TaskServiceTest.java
+/home/patyo/school/syp/backend/src/test/java/at/halasi/backend/TaskTest.java
