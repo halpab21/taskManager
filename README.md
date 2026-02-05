@@ -100,8 +100,8 @@ This method runs the entire stack (database, backend, frontend) in containers.
 This method is better when you're actively developing and want faster feedback loops.
 
 **Prerequisites:**
-- Java 17 or higher ([Download OpenJDK](https://adoptium.net/))
-- Maven 3.9+ (usually bundled with Java IDEs)
+- Java 17 or higher ([Download OpenJDK 17](https://adoptium.net/temurin/releases/?version=17) or [Java 21 LTS](https://adoptium.net/temurin/releases/?version=21))
+- Maven 3.9+ ([Download Maven](https://maven.apache.org/download.cgi))
 - Node.js 20+ ([Download Node.js](https://nodejs.org/))
 - Docker (for database only)
 
