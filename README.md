@@ -47,26 +47,138 @@ docker-compose -f docker-compose.prod.yml down -v
 
 ---
 
-## 🛠️ Development Setup
+## 🛠️ Local Development Setup
 
-### Backend
-- Location: `backend/`
-- Requirements: Java 17, Maven
-- Run: `mvn spring-boot:run`
-- API: `http://localhost:8080`
+There are two ways to run the application locally:
+1. **Option A**: Using Docker Compose (Easiest - Everything in containers)
+2. **Option B**: Manual setup (Backend + Frontend separately with local database)
 
-### Frontend
-- Location: `frontend/`
-- Requirements: Node.js 20+
-- Install: `npm install`
-- Run: `npm run dev`
-- URL: `http://localhost:5173`
+---
 
-### Database
-Start PostgreSQL with Docker:
+### Option A: Using Docker Compose (Recommended for Local Development)
+
+This method runs the entire stack (database, backend, frontend) in containers.
+
+**Prerequisites:**
+- [Docker Desktop](https://docs.docker.com/get-docker/) installed and running
+
+**Steps:**
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/halpab21/taskManager.git
+   cd taskManager
+   ```
+
+2. **Build and start all services:**
+   ```bash
+   docker-compose up --build
+   ```
+
+   This will:
+   - Start PostgreSQL database on port `5432`
+   - Build and start the application (frontend + backend) on port `8080`
+
+3. **Access the application:**
+   - Application: http://localhost:8080
+   - Backend API: http://localhost:8080/api
+
+4. **Stop the application:**
+   ```bash
+   docker-compose down
+   ```
+
+5. **Stop and remove all data (including database):**
+   ```bash
+   docker-compose down -v
+   ```
+
+---
+
+### Option B: Manual Setup (For Active Development)
+
+This method is better when you're actively developing and want faster feedback loops.
+
+**Prerequisites:**
+- Java 17 or higher ([Download OpenJDK 17](https://adoptium.net/temurin/releases/?version=17) or [Java 21 LTS](https://adoptium.net/temurin/releases/?version=21))
+- Maven 3.9+ ([Download Maven](https://maven.apache.org/download.cgi))
+- Node.js 20+ ([Download Node.js](https://nodejs.org/))
+- Docker (for database only)
+
+**Step 1: Start PostgreSQL Database**
+
+Use Docker to run only the database:
 ```bash
 docker-compose up db
 ```
+
+The database will be available at `localhost:5432` with:
+- Database: `taskmanager`
+- Username: `admin`
+- Password: `admin`
+
+**Step 2: Start the Backend (Spring Boot)**
+
+Open a new terminal window:
+```bash
+cd backend
+mvn spring-boot:run
+```
+
+The backend API will start on http://localhost:8080
+
+**Step 3: Start the Frontend (React + Vite)**
+
+Open another terminal window:
+```bash
+cd frontend
+npm install          # Only needed first time
+npm run dev
+```
+
+The frontend will start on http://localhost:5173
+
+**Step 4: Access the Application**
+
+Open your browser and navigate to http://localhost:5173
+
+---
+
+### 🔧 Troubleshooting
+
+**Problem: Port already in use**
+- Check if another service is using the port:
+  ```bash
+  # On Linux/Mac
+  lsof -i :8080
+  lsof -i :5173
+  lsof -i :5432
+  
+  # On Windows
+  netstat -ano | findstr :8080
+  netstat -ano | findstr :5173
+  netstat -ano | findstr :5432
+  ```
+- Stop the conflicting service or change the port in the configuration
+
+**Problem: Database connection refused**
+- Ensure PostgreSQL container is running: `docker ps`
+- Check database logs: `docker-compose logs db`
+- Verify connection details in `backend/src/main/resources/application.properties`
+
+**Problem: Frontend can't connect to backend**
+- Ensure backend is running on http://localhost:8080
+- Check for CORS errors in browser console
+- Verify API endpoint in frontend configuration
+
+**Problem: Maven build fails**
+- Clean and rebuild: `mvn clean install`
+- Check Java version: `java -version` (should be 17+)
+
+**Problem: npm install fails**
+- Clear npm cache: `npm cache clean --force`
+- Delete `node_modules` and `package-lock.json`, then run `npm install` again
+- Check Node.js version: `node -v` (should be 20+)
 
 ---
 
