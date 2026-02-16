@@ -1,9 +1,6 @@
 version: "3.9"
 
 services:
-  # -------------------------------------------------
-  # POSTGRES DATABASE
-  # -------------------------------------------------
   db:
     image: postgres:16
     container_name: postgres-db
@@ -18,18 +15,20 @@ services:
       - postgres-data:/var/lib/postgresql/data
     networks:
       - app-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d taskmanager"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
-  # -------------------------------------------------
-  # BACKEND (Spring Boot)
-  # Uses your multi-stage Dockerfile
-  # -------------------------------------------------
   backend:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: backend-app
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/taskmanager
       SPRING_DATASOURCE_USERNAME: admin
@@ -38,11 +37,8 @@ services:
     ports:
       - "8080:8080"
     networks:
-      - app-net
+      - app-net   # <-- THIS IS CRITICAL
 
-  # -------------------------------------------------
-  # FRONTEND (Vite build served by NGINX)
-  # -------------------------------------------------
   frontend:
     image: nginx:alpine
     container_name: frontend-app
@@ -54,7 +50,7 @@ services:
     ports:
       - "5173:80"
     networks:
-      - app-net
+      - app-net   # <-- THIS IS CRITICAL
 
 volumes:
   postgres-data:

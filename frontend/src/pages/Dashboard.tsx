@@ -15,6 +15,7 @@ export default function Dashboard({ tasks, setTasks }: DashboardProps) {
     const [newDescription, setNewDescription] = useState('');
     const [newPriority, setNewPriority] = useState<Priority>('SOMETIME_IN_FUTURE');
     const [newDeadline, setNewDeadline] = useState('');
+    const [newStartDate, setNewStartDate] = useState('');
     const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all');
 
     const toggleTask = async (id: number) => {
@@ -59,6 +60,7 @@ export default function Dashboard({ tasks, setTasks }: DashboardProps) {
             description: newDescription,
             priority: newPriority,
             deadline: newDeadline || null,
+            startDate: newStartDate || null,
         };
 
         try {
@@ -84,6 +86,7 @@ export default function Dashboard({ tasks, setTasks }: DashboardProps) {
         setNewDescription('');
         setNewPriority('SOMETIME_IN_FUTURE');
         setNewDeadline('');
+        setNewStartDate('');
         setShowModal(false);
     };
 
@@ -186,6 +189,8 @@ export default function Dashboard({ tasks, setTasks }: DashboardProps) {
                 setPriority={setNewPriority}
                 deadline={newDeadline}
                 setDeadline={setNewDeadline}
+                startDate={newStartDate}
+                setStartDate={setNewStartDate}
             />
         </div>
     );

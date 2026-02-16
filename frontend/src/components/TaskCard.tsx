@@ -52,12 +52,18 @@ export default function TaskCard({ task, onToggle, onDelete }: TaskCardProps) {
                     </span>
                 </div>
                 <p className="task-description" data-testid="task-description">{task.description}</p>
-                {task.deadline && (
-                    <div className="task-deadline" data-testid="task-deadline">
-                        <span className="deadline-icon">📅</span>
-                        <span>{formatDate(task.deadline)}</span>
-                    </div>
-                )}
+                <div className="task-time" data-testid="task-time">
+                    {task.startDate && (
+                            <span>{formatDate(task.startDate)} -</span>
+                    )}
+                    {task.deadline ? (
+                                <span>{formatDate(task.deadline)}</span>
+                        ) :
+                        (
+                                <span>∞</span>
+                        )
+                    }
+                </div>
             </div>
 
             {onDelete && (

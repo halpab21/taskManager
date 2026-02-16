@@ -23,6 +23,7 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private Priority priority;
 
+    private LocalDate startDate;
     private LocalDate deadline;
 }
 

@@ -7,7 +7,8 @@ const mockdata: Task[] = [
         description: 'Milch, Eier, Brot und Obst besorgen',
         completed: false,
         priority: 'SOON',
-        deadline: '2025-12-03'
+        deadline: '2025-12-03',
+        startDate: null
     },
     {
         id: 2,
@@ -15,7 +16,8 @@ const mockdata: Task[] = [
         description: 'Abschnitt Einleitung und Ergebnisdarstellung überarbeiten',
         completed: false,
         priority: 'ASAP',
-        deadline: '2025-12-10'
+        deadline: '2025-12-10',
+        startDate: null
     },
     {
         id: 3,
@@ -23,7 +25,8 @@ const mockdata: Task[] = [
         description: 'Staubsaugen, Bad reinigen, Müll entsorgen',
         completed: true,
         priority: 'SOMETIME_IN_FUTURE',
-        deadline: null
+        deadline: null,
+        startDate: null
     },
     {
         id: 4,
@@ -31,7 +34,8 @@ const mockdata: Task[] = [
         description: 'Routinekontrolle für Januar 2026 anfragen',
         completed: false,
         priority: 'SOMETIME_IN_FUTURE',
-        deadline: '2026-01-15'
+        deadline: '2026-01-15',
+        startDate: '2026-01-13'
     },
     {
         id: 5,
@@ -39,7 +43,8 @@ const mockdata: Task[] = [
         description: 'Kleine Aufmerksamkeit für Marie besorgen (Buch oder Gutschein)',
         completed: false,
         priority: 'SOON',
-        deadline: '2025-12-20'
+        deadline: '2025-12-20',
+        startDate: null
     },
     {
         id: 6,
@@ -47,7 +52,8 @@ const mockdata: Task[] = [
         description: 'Pull Request #42 prüfen und Feedback geben',
         completed: false,
         priority: 'ASAP',
-        deadline: '2025-12-09'
+        deadline: '2025-12-09',
+        startDate: null
     }
 ];
 

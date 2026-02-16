@@ -110,7 +110,7 @@
     line-height: 1.5;
 }
 
-.task-deadline {
+.task-time {
     display: inline-flex;
     align-items: center;
     gap: 6px;
@@ -121,7 +121,7 @@
     color: #c4b5fd;
 }
 
-.deadline-icon {
+.time-icon {
     font-size: 0.9rem;
 }
 

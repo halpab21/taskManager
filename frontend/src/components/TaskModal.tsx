@@ -13,6 +13,8 @@ interface TaskModalProps {
     setPriority: (value: Priority) => void;
     deadline: string;
     setDeadline: (value: string) => void;
+    startDate: string;
+    setStartDate: (value: string) => void;
 }
 
 export default function TaskModal({
@@ -26,7 +28,9 @@ export default function TaskModal({
     priority,
     setPriority,
     deadline,
-    setDeadline
+    setDeadline,
+    startDate,
+    setStartDate,
 }: TaskModalProps) {
     if (!isOpen) return null;
 
@@ -69,19 +73,31 @@ export default function TaskModal({
                         />
                     </div>
 
+                    <div className="form-group">
+                        <label htmlFor="priority">Priority</label>
+                        <select
+                            id="priority"
+                            data-testid="task-priority-select"
+                            value={priority}
+                            onChange={(e) => setPriority(e.target.value as Priority)}
+                        >
+                            <option value="ASAP">🔴 ASAP</option>
+                            <option value="SOON">🟡 Soon</option>
+                            <option value="SOMETIME_IN_FUTURE">🟢 Sometime</option>
+                        </select>
+                    </div>
+
                     <div className="form-row">
+
                         <div className="form-group">
-                            <label htmlFor="priority">Priority</label>
-                            <select
-                                id="priority"
-                                data-testid="task-priority-select"
-                                value={priority}
-                                onChange={(e) => setPriority(e.target.value as Priority)}
-                            >
-                                <option value="ASAP">🔴 ASAP</option>
-                                <option value="SOON">🟡 Soon</option>
-                                <option value="SOMETIME_IN_FUTURE">🟢 Sometime</option>
-                            </select>
+                            <label htmlFor="startDate">Startdate</label>
+                            <input
+                                id="startDate"
+                                data-testid="task-startdate-input"
+                                type="date"
+                                value={startDate}
+                                onChange={(e) => setStartDate(e.target.value)}
+                            />
                         </div>
 
                         <div className="form-group">
@@ -94,6 +110,7 @@ export default function TaskModal({
                                 onChange={(e) => setDeadline(e.target.value)}
                             />
                         </div>
+
                     </div>
 
                     <div className="modal-actions">

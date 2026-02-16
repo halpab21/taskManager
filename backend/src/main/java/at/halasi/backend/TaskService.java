@@ -27,6 +27,7 @@ public class TaskService {
                 .completed(false)
                 .priority(taskDTO.priority() != null ? taskDTO.priority() : Priority.SOMETIME_IN_FUTURE)
                 .deadline(taskDTO.deadline())
+                .startDate(taskDTO.startDate())
                 .build();
 
         return taskRepository.save(task);
@@ -41,6 +42,7 @@ public class TaskService {
         task.setDescription(taskDTO.description());
         task.setPriority(taskDTO.priority());
         task.setDeadline(taskDTO.deadline());
+        task.setStartDate(taskDTO.startDate());
         return taskRepository.save(task);
     }
 

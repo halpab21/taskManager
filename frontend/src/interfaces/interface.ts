@@ -5,6 +5,7 @@ export interface CreatePost {
     description: string;
     priority: Priority;
     deadline: string | null;
+    startDate: string | null;
 }
 
 export interface Task {
@@ -14,4 +15,5 @@ export interface Task {
     completed: boolean;
     priority: Priority;
     deadline: string | null;
+    startDate: string | null;
 }
