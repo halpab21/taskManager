@@ -93,15 +93,13 @@ describe('Task Manager E2E Tests', () => {
     it('should delete a task', () => {
       cy.intercept('DELETE', 'http://localhost:8080/task/*').as('deleteTask');
 
-      // Get initial count
-      cy.get('[data-testid="task-card"]').then(($cards) => {
-        const initialCount = $cards.length;
-
+      // Get the title of the task we're about to delete
+      cy.get('[data-testid="task-title"]').first().invoke('text').then((titleToDelete) => {
         // Click delete on first task
         cy.get('[data-testid="delete-task-btn"]').first().click({ force: true });
 
-        // Should have one less task
-        cy.get('[data-testid="task-card"]').should('have.length', initialCount - 1);
+        // The deleted task's title should no longer appear
+        cy.contains('[data-testid="task-card"]', titleToDelete).should('not.exist');
       });
     });
   });
@@ -281,13 +279,17 @@ describe('Task Manager E2E Tests', () => {
     it('should persist theme in localStorage after applying', () => {
       cy.get('[data-testid="open-theme-btn"]').click();
       cy.get('[data-testid="color-picker-accent"]').invoke('val', '#ff0000').trigger('input').trigger('change');
-      cy.window().its('localStorage').invoke('getItem', 'theme-accent').should('not.be.null');
+      cy.window().then((win) => {
+        expect(win.localStorage.getItem('theme-accent')).to.eq('#ff0000');
+      });
     });
 
     it('should reset theme on reset button click', () => {
       cy.get('[data-testid="open-theme-btn"]').click();
       cy.get('[data-testid="reset-theme-btn"]').click();
-      cy.window().its('localStorage').invoke('getItem', 'theme-bg').should('eq', '#0f0a19');
+      cy.window().then((win) => {
+        expect(win.localStorage.getItem('theme-bg')).to.eq('#0f0a19');
+      });
     });
   });
 });
