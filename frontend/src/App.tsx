@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
-import type { Task, Dashboard as DashboardType } from './interfaces/interface.ts';
-import { getMyDashboardIds } from './utils/dashboardStorage';
+import type { Dashboard as DashboardType } from './interfaces/interface.ts';
+import { getMyDashboardIds, saveMyDashboardId } from './utils/dashboardStorage';
 import Sidebar from './components/Sidebar';
-import DashboardView from './pages/Dashboard';
 import Calendar from './pages/Calendar';
 import DashboardPage from './pages/DashboardPage';
 
@@ -22,24 +21,41 @@ function applyStoredTheme() {
 }
 
 export default function App() {
-    const [tasks, setTasks] = useState<Task[]>([]);
     const [dashboards, setDashboards] = useState<DashboardType[]>([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         applyStoredTheme();
-        fetch('http://localhost:8080/')
-            .then(r => r.json())
-            .then(setTasks)
-            .catch(() => {});
 
-        fetch('http://localhost:8080/dashboards')
-            .then(r => r.json())
-            .then((all: DashboardType[]) => {
+        const init = async () => {
+            try {
+                const all: DashboardType[] = await fetch('http://localhost:8080/dashboards').then(r => r.json());
                 const myIds = getMyDashboardIds();
-                // Only show dashboards this browser created or joined
-                setDashboards(myIds.length ? all.filter(d => myIds.includes(d.id)) : []);
-            })
-            .catch(() => {});
+                let mine = myIds.length ? all.filter(d => myIds.includes(d.id)) : [];
+
+                // First-time user: auto-create a Personal dashboard
+                if (mine.length === 0) {
+                    const res = await fetch('http://localhost:8080/dashboard', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ name: 'Personal', isGroup: false }),
+                    });
+                    if (res.ok) {
+                        const created: DashboardType = await res.json();
+                        saveMyDashboardId(created.id);
+                        mine = [created];
+                    }
+                }
+
+                setDashboards(mine);
+            } catch {
+                // backend not reachable
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        init();
     }, []);
 
     return (
@@ -48,8 +64,15 @@ export default function App() {
                 <Sidebar dashboards={dashboards} setDashboards={setDashboards} />
                 <main className="main-content">
                     <Routes>
-                        <Route path="/" element={<DashboardView tasks={tasks} setTasks={setTasks} />} />
-                        <Route path="/calendar" element={<Calendar tasks={tasks} />} />
+                        <Route
+                            path="/"
+                            element={
+                                loading ? null : dashboards.length > 0
+                                    ? <Navigate to={`/dashboard/${dashboards[0].id}`} replace />
+                                    : <div style={{ padding: 40, color: 'var(--text-primary)' }}>Could not reach the server.</div>
+                            }
+                        />
+                        <Route path="/calendar" element={<Calendar dashboards={dashboards} />} />
                         <Route path="/dashboard/:id" element={<DashboardPage />} />
                     </Routes>
                 </main>

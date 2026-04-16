@@ -7,13 +7,38 @@
 
 .calendar-header {
     margin-bottom: 32px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
 }
 
 .calendar-header h1 {
     margin: 0 0 4px 0;
     font-size: 2rem;
     font-weight: 700;
-    color: #e9e4f0;
+    color: var(--text-primary);
+}
+
+.calendar-dashboard-filter {
+    padding: 8px 14px;
+    background: var(--bg-secondary);
+    border: 1px solid color-mix(in srgb, var(--accent-color) 30%, transparent);
+    border-radius: 10px;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    cursor: pointer;
+    outline: none;
+    align-self: center;
+}
+
+.calendar-dashboard-filter:focus {
+    border-color: var(--accent-color);
+}
+
+.upcoming-dashboard {
+    color: #6b5b7a;
 }
 
 .calendar-layout {
@@ -24,8 +49,8 @@
 }
 
 .calendar-main {
-    background: linear-gradient(135deg, #2d2040 0%, #1f1a2e 100%);
-    border: 1px solid rgba(138, 43, 226, 0.15);
+    background: var(--bg-secondary);
+    border: 1px solid color-mix(in srgb, var(--accent-color) 15%, transparent);
     border-radius: 20px;
     padding: 24px;
 }
@@ -40,8 +65,8 @@
 .nav-btn {
     width: 44px;
     height: 44px;
-    background: rgba(124, 58, 237, 0.1);
-    border: 1px solid rgba(138, 43, 226, 0.2);
+    background: color-mix(in srgb, var(--accent-color) 10%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent-color) 20%, transparent);
     border-radius: 12px;
     color: #c4b5fd;
     font-size: 1.2rem;
@@ -50,8 +75,8 @@
 }
 
 .nav-btn:hover {
-    background: rgba(124, 58, 237, 0.2);
-    color: #e9e4f0;
+    background: color-mix(in srgb, var(--accent-color) 20%, transparent);
+    color: var(--text-primary);
 }
 
 .current-month {
@@ -64,7 +89,7 @@
     margin: 0;
     font-size: 1.5rem;
     font-weight: 600;
-    color: #e9e4f0;
+    color: var(--text-primary);
 }
 
 .today-btn {
@@ -80,7 +105,7 @@
 }
 
 .today-btn:hover {
-    background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+    background: var(--accent-color);
     color: white;
     border-color: transparent;
 }
@@ -182,8 +207,8 @@
 
 /* Sidebar */
 .calendar-sidebar {
-    background: linear-gradient(135deg, #2d2040 0%, #1f1a2e 100%);
-    border: 1px solid rgba(138, 43, 226, 0.15);
+    background: var(--bg-secondary);
+    border: 1px solid color-mix(in srgb, var(--accent-color) 15%, transparent);
     border-radius: 20px;
     padding: 24px;
     height: fit-content;
@@ -193,7 +218,7 @@
     margin: 0 0 20px 0;
     font-size: 1.1rem;
     font-weight: 600;
-    color: #e9e4f0;
+    color: var(--text-primary);
 }
 
 .no-upcoming {
@@ -255,7 +280,7 @@
 .upcoming-title {
     font-size: 0.9rem;
     font-weight: 500;
-    color: #e9e4f0;
+    color: var(--text-primary);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
