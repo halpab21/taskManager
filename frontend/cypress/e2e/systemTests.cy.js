@@ -95,8 +95,10 @@ describe('Task Manager E2E Tests', () => {
 
       // Get the title of the task we're about to delete
       cy.get('[data-testid="task-title"]').first().invoke('text').then((titleToDelete) => {
+        // Trigger hover so the task-actions div becomes visible (opacity: 0 -> 1)
+        cy.get('[data-testid="task-card"]').first().trigger('mouseover');
         // Click delete on first task
-        cy.get('[data-testid="delete-task-btn"]').first().click({ force: true });
+        cy.get('[data-testid="delete-task-btn"]').first().click();
 
         // The deleted task's title should no longer appear
         cy.contains('[data-testid="task-card"]', titleToDelete).should('not.exist');
@@ -278,7 +280,14 @@ describe('Task Manager E2E Tests', () => {
 
     it('should persist theme in localStorage after applying', () => {
       cy.get('[data-testid="open-theme-btn"]').click();
-      cy.get('[data-testid="color-picker-accent"]').invoke('val', '#ff0000').trigger('input').trigger('change');
+      // Use the native HTMLInputElement value setter so React's synthetic onChange fires
+      cy.get('[data-testid="color-picker-accent"]').then(($el) => {
+        const win = $el[0].ownerDocument.defaultView;
+        const nativeSetter = Object.getOwnPropertyDescriptor(win.HTMLInputElement.prototype, 'value').set;
+        nativeSetter.call($el[0], '#ff0000');
+        $el[0].dispatchEvent(new win.Event('input', { bubbles: true }));
+        $el[0].dispatchEvent(new win.Event('change', { bubbles: true }));
+      });
       cy.window().then((win) => {
         expect(win.localStorage.getItem('theme-accent')).to.eq('#ff0000');
       });
