@@ -25,5 +25,6 @@ public class Task {
 
     private LocalDate startDate;
     private LocalDate deadline;
+    private Long dashboardId;
 }
 

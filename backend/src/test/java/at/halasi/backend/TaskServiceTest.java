@@ -64,7 +64,7 @@ class TaskServiceTest {
     @Test
     void createTask_withPriorityAndDeadline() {
         var deadline = LocalDate.of(2026, 3, 1);
-        var dto = new TaskDTO("New Task", "Description", Priority.ASAP, deadline);
+        var dto = new TaskDTO("New Task", "Description", Priority.ASAP, deadline, null, null);
 
         var savedTask = Task.builder()
                 .id(1L).title("New Task").description("Description")
@@ -81,8 +81,23 @@ class TaskServiceTest {
     }
 
     @Test
+    void createTask_withDashboardId_persistsDashboardId() {
+        var dto = new TaskDTO("Task", "Desc", Priority.SOON, null, null, 42L);
+
+        var savedTask = Task.builder()
+                .id(1L).title("Task").description("Desc")
+                .completed(false).priority(Priority.SOON).dashboardId(42L).build();
+
+        when(taskRepository.save(any(Task.class))).thenReturn(savedTask);
+
+        var result = taskService.createTask(dto);
+
+        assertThat(result.getDashboardId()).isEqualTo(42L);
+    }
+
+    @Test
     void createTask_withNullPriority_defaultsToSometimeInFuture() {
-        var dto = new TaskDTO("Task", "Desc", null, null);
+        var dto = new TaskDTO("Task", "Desc", null, null, null, null);
 
         var savedTask = Task.builder()
                 .id(1L).title("Task").description("Desc")
@@ -101,7 +116,7 @@ class TaskServiceTest {
                 .id(1L).title("Old").description("Old Desc")
                 .completed(false).priority(Priority.SOON).deadline(null).build();
 
-        var dto = new TaskDTO("Updated", "Updated Desc", Priority.ASAP, LocalDate.of(2026, 5, 1));
+        var dto = new TaskDTO("Updated", "Updated Desc", Priority.ASAP, LocalDate.of(2026, 5, 1), null, null);
 
         when(taskRepository.findById(1L)).thenReturn(Optional.of(existingTask));
         when(taskRepository.save(any(Task.class))).thenAnswer(inv -> inv.getArgument(0));
@@ -115,7 +130,7 @@ class TaskServiceTest {
 
     @Test
     void updateTask_notFound() {
-        var dto = new TaskDTO("Updated", "Updated Desc", Priority.ASAP, null);
+        var dto = new TaskDTO("Updated", "Updated Desc", Priority.ASAP, null, null, null);
 
         when(taskRepository.findById(999L)).thenReturn(Optional.empty());
 

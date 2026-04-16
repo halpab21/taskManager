@@ -5,9 +5,10 @@ interface TaskCardProps {
     task: Task;
     onToggle: (id: number) => void;
     onDelete?: (id: number) => void;
+    onEdit?: (task: Task) => void;
 }
 
-export default function TaskCard({ task, onToggle, onDelete }: TaskCardProps) {
+export default function TaskCard({ task, onToggle, onDelete, onEdit }: TaskCardProps) {
     const getPriorityClass = (priority: Priority) => {
         switch (priority) {
             case 'ASAP': return 'priority-asap';
@@ -54,32 +55,40 @@ export default function TaskCard({ task, onToggle, onDelete }: TaskCardProps) {
                 <p className="task-description" data-testid="task-description">{task.description}</p>
                 <div className="task-time" data-testid="task-time">
                     {task.startDate && (
-                            <span>{formatDate(task.startDate)} -</span>
+                        <span>{formatDate(task.startDate)}  -</span>
                     )}
                     {task.deadline ? (
-                                <span>{formatDate(task.deadline)}</span>
-                        ) :
-                        (
-                                <span>∞</span>
-                        )
-                    }
+                        <span>{formatDate(task.deadline)}</span>
+                    ) : (
+                        <span>∞</span>
+                    )}
                 </div>
             </div>
 
-            {onDelete && (
-                <button
-                    className="delete-btn"
-                    data-testid="delete-task-btn"
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        onDelete(task.id);
-                    }}
-                    aria-label="Delete task"
-                >
-                    🗑️
-                </button>
-            )}
+            <div className="task-actions">
+                {onEdit && (
+                    <button
+                        className="edit-btn"
+                        data-testid="edit-task-btn"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            onEdit(task);
+                        }}
+                        aria-label="Edit task"
+                    >✏️</button>
+                )}
+                {onDelete && (
+                    <button
+                        className="delete-btn"
+                        data-testid="delete-task-btn"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            onDelete(task.id);
+                        }}
+                        aria-label="Delete task"
+                    >🗑️</button>
+                )}
+            </div>
         </div>
     );
 }
-

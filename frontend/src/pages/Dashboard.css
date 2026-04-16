@@ -160,3 +160,49 @@
     transform: translateY(-1px);
 }
 
+
+.named-dashboard-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 40px;
+    background: rgba(124, 58, 237, 0.08);
+    border-bottom: 1px solid rgba(138, 43, 226, 0.15);
+    font-size: 1rem;
+    font-weight: 600;
+    color: #c4b5fd;
+    gap: 16px;
+}
+
+.share-code-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.share-code-toggle {
+    padding: 5px 12px;
+    background: rgba(124, 58, 237, 0.15);
+    border: 1px solid rgba(138, 43, 226, 0.3);
+    border-radius: 8px;
+    color: #c4b5fd;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.share-code-toggle:hover {
+    background: rgba(124, 58, 237, 0.25);
+}
+
+.share-code {
+    font-family: monospace;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: #a855f7;
+    padding: 4px 12px;
+    background: rgba(124, 58, 237, 0.1);
+    border-radius: 6px;
+    border: 1px dashed rgba(138, 43, 226, 0.4);
+}

@@ -7,10 +7,12 @@ import './Dashboard.css';
 interface DashboardProps {
     tasks: Task[];
     setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
+    dashboardId?: number | null;
 }
 
-export default function Dashboard({ tasks, setTasks }: DashboardProps) {
+export default function Dashboard({ tasks, setTasks, dashboardId = null }: DashboardProps) {
     const [showModal, setShowModal] = useState(false);
+    const [editingTask, setEditingTask] = useState<Task | null>(null);
     const [newTitle, setNewTitle] = useState('');
     const [newDescription, setNewDescription] = useState('');
     const [newPriority, setNewPriority] = useState<Priority>('SOMETIME_IN_FUTURE');
@@ -19,40 +21,50 @@ export default function Dashboard({ tasks, setTasks }: DashboardProps) {
     const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all');
 
     const toggleTask = async (id: number) => {
-        // Optimistic update first
         setTasks((prev) =>
             prev.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t))
         );
-
         try {
-            const res = await fetch(`http://localhost:8080/task/${id}/toggle`, {
-                method: 'PATCH',
-            });
+            const res = await fetch(`http://localhost:8080/task/${id}/toggle`, { method: 'PATCH' });
             if (res.ok) {
                 const updatedTask = await res.json();
-                // Sync with server response
                 setTasks((prev) => prev.map((t) => (t.id === id ? updatedTask : t)));
             }
         } catch {
-            // Already updated optimistically, no need to do anything
+            // optimistic update already applied
         }
     };
 
     const deleteTask = async (id: number) => {
-        // Optimistic delete
         setTasks((prev) => prev.filter((t) => t.id !== id));
-
         try {
-            await fetch(`http://localhost:8080/task/${id}`, {
-                method: 'DELETE',
-            });
+            await fetch(`http://localhost:8080/task/${id}`, { method: 'DELETE' });
         } catch {
-            // If delete fails, we could restore the task, but for now just log
             console.error('Failed to delete task on server');
         }
     };
 
-    const addTask = async () => {
+    const openEditModal = (task: Task) => {
+        setEditingTask(task);
+        setNewTitle(task.title);
+        setNewDescription(task.description);
+        setNewPriority(task.priority);
+        setNewDeadline(task.deadline ?? '');
+        setNewStartDate(task.startDate ?? '');
+        setShowModal(true);
+    };
+
+    const openCreateModal = () => {
+        setEditingTask(null);
+        setNewTitle('');
+        setNewDescription('');
+        setNewPriority('SOMETIME_IN_FUTURE');
+        setNewDeadline('');
+        setNewStartDate('');
+        setShowModal(true);
+    };
+
+    const submitTask = async () => {
         if (!newTitle.trim()) return;
 
         const data: CreatePost = {
@@ -61,21 +73,37 @@ export default function Dashboard({ tasks, setTasks }: DashboardProps) {
             priority: newPriority,
             deadline: newDeadline || null,
             startDate: newStartDate || null,
+            dashboardId: dashboardId ?? null,
         };
 
-        try {
-            const res = await fetch('http://localhost:8080/task', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data),
-            });
-
-            if (res.ok) {
-                const createdTask = await res.json();
-                setTasks((prev) => [...prev, createdTask]);
+        if (editingTask) {
+            try {
+                const res = await fetch(`http://localhost:8080/task/${editingTask.id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data),
+                });
+                if (res.ok) {
+                    const updated = await res.json();
+                    setTasks((prev) => prev.map((t) => (t.id === editingTask.id ? updated : t)));
+                }
+            } catch (err) {
+                console.error('Error updating task:', err);
             }
-        } catch (err) {
-            console.error('Error creating task:', err);
+        } else {
+            try {
+                const res = await fetch('http://localhost:8080/task', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data),
+                });
+                if (res.ok) {
+                    const created = await res.json();
+                    setTasks((prev) => [...prev, created]);
+                }
+            } catch (err) {
+                console.error('Error creating task:', err);
+            }
         }
 
         resetForm();
@@ -88,6 +116,7 @@ export default function Dashboard({ tasks, setTasks }: DashboardProps) {
         setNewDeadline('');
         setNewStartDate('');
         setShowModal(false);
+        setEditingTask(null);
     };
 
     const filteredTasks = tasks.filter((task) => {
@@ -115,7 +144,7 @@ export default function Dashboard({ tasks, setTasks }: DashboardProps) {
                     <h1>Dashboard</h1>
                     <p className="subtitle">Manage your tasks efficiently</p>
                 </div>
-                <button className="add-task-btn" data-testid="add-task-btn" onClick={() => setShowModal(true)}>
+                <button className="add-task-btn" data-testid="add-task-btn" onClick={openCreateModal}>
                     <span>+</span> New Task
                 </button>
             </header>
@@ -136,24 +165,9 @@ export default function Dashboard({ tasks, setTasks }: DashboardProps) {
             </div>
 
             <div className="filter-bar">
-                <button
-                    className={`filter-btn ${filter === 'all' ? 'active' : ''}`}
-                    onClick={() => setFilter('all')}
-                >
-                    All
-                </button>
-                <button
-                    className={`filter-btn ${filter === 'active' ? 'active' : ''}`}
-                    onClick={() => setFilter('active')}
-                >
-                    Active
-                </button>
-                <button
-                    className={`filter-btn ${filter === 'completed' ? 'active' : ''}`}
-                    onClick={() => setFilter('completed')}
-                >
-                    Completed
-                </button>
+                <button className={`filter-btn ${filter === 'all' ? 'active' : ''}`} onClick={() => setFilter('all')}>All</button>
+                <button className={`filter-btn ${filter === 'active' ? 'active' : ''}`} onClick={() => setFilter('active')}>Active</button>
+                <button className={`filter-btn ${filter === 'completed' ? 'active' : ''}`} onClick={() => setFilter('completed')}>Completed</button>
             </div>
 
             <div className="tasks-list">
@@ -161,7 +175,7 @@ export default function Dashboard({ tasks, setTasks }: DashboardProps) {
                     <div className="empty-state">
                         <span className="empty-icon">📋</span>
                         <p>No tasks found</p>
-                        <button className="add-task-btn-small" onClick={() => setShowModal(true)}>
+                        <button className="add-task-btn-small" onClick={openCreateModal}>
                             Create your first task
                         </button>
                     </div>
@@ -172,6 +186,7 @@ export default function Dashboard({ tasks, setTasks }: DashboardProps) {
                             task={task}
                             onToggle={toggleTask}
                             onDelete={deleteTask}
+                            onEdit={openEditModal}
                         />
                     ))
                 )}
@@ -179,8 +194,9 @@ export default function Dashboard({ tasks, setTasks }: DashboardProps) {
 
             <TaskModal
                 isOpen={showModal}
+                editMode={!!editingTask}
                 onClose={resetForm}
-                onSubmit={addTask}
+                onSubmit={submitTask}
                 title={newTitle}
                 setTitle={setNewTitle}
                 description={newDescription}

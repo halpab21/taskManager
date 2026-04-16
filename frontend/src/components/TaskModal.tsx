@@ -3,6 +3,7 @@ import './TaskModal.css';
 
 interface TaskModalProps {
     isOpen: boolean;
+    editMode?: boolean;
     onClose: () => void;
     onSubmit: () => void;
     title: string;
@@ -19,6 +20,7 @@ interface TaskModalProps {
 
 export default function TaskModal({
     isOpen,
+    editMode = false,
     onClose,
     onSubmit,
     title,
@@ -43,7 +45,7 @@ export default function TaskModal({
         <div className="modal-overlay" data-testid="modal-overlay" onClick={onClose}>
             <div className="modal-container" data-testid="modal-container" onClick={(e) => e.stopPropagation()}>
                 <div className="modal-header">
-                    <h2>Create New Task</h2>
+                    <h2>{editMode ? 'Edit Task' : 'Create New Task'}</h2>
                     <button className="modal-close" onClick={onClose}>✕</button>
                 </div>
 
@@ -88,7 +90,6 @@ export default function TaskModal({
                     </div>
 
                     <div className="form-row">
-
                         <div className="form-group">
                             <label htmlFor="startDate">Startdate</label>
                             <input
@@ -110,7 +111,6 @@ export default function TaskModal({
                                 onChange={(e) => setDeadline(e.target.value)}
                             />
                         </div>
-
                     </div>
 
                     <div className="modal-actions">
@@ -118,7 +118,7 @@ export default function TaskModal({
                             Cancel
                         </button>
                         <button type="submit" className="btn btn-primary" data-testid="submit-task-btn">
-                            Create Task
+                            {editMode ? 'Save Changes' : 'Create Task'}
                         </button>
                     </div>
                 </form>
@@ -126,4 +126,3 @@ export default function TaskModal({
         </div>
     );
 }
-

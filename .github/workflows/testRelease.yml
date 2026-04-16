@@ -80,11 +80,34 @@ jobs:
 
 
   # ----------------------------------------------------------
+  # COVERAGE GATE — fails build if line coverage drops below 85%
+  # ----------------------------------------------------------
+  coverage-gate:
+    runs-on: ubuntu-latest
+    needs: backend-tests
+
+    steps:
+      - name: Download JaCoCo report
+        uses: actions/download-artifact@v4
+        with:
+          name: jacoco-report
+          path: jacoco-report
+
+      - name: Enforce 85% line coverage minimum
+        run: |
+          awk -F',' 'NR>1 {missed+=$4; covered+=$5} END {
+            pct=(covered/(missed+covered))*100;
+            printf "Line coverage: %.1f%%\n", pct;
+            if(pct < 85) {print "FAILED: coverage below 85%"; exit 1}
+            else {print "PASSED"}
+          }' jacoco-report/jacoco.csv
+
+  # ----------------------------------------------------------
   # CYPRESS E2E TESTS WITH VITE DEV SERVER (SOLUTION A)
   # ----------------------------------------------------------
   cypress-e2e:
     runs-on: ubuntu-latest
-    needs: [backend-tests, frontend-build]
+    needs: [coverage-gate, frontend-build]
 
     services:
       postgres:

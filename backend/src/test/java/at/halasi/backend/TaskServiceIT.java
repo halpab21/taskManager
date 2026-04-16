@@ -27,9 +27,9 @@ class TaskServiceIT extends AbstractPostgresIT {
     void createMultipleTasks_andFetchAll_andFetchById() {
 
         // ✅ 1️⃣ Create multiple tasks via REAL service
-        var dto1 = new TaskDTO("Task One", "First description", Priority.ASAP, LocalDate.of(2026, 2, 15));
-        var dto2 = new TaskDTO("Task Two", "Second description", Priority.SOON, null);
-        var dto3 = new TaskDTO("Task Three", "Third description", Priority.SOMETIME_IN_FUTURE, LocalDate.of(2026, 6, 1));
+        var dto1 = new TaskDTO("Task One", "First description", Priority.ASAP, LocalDate.of(2026, 2, 15), LocalDate.of(2026, 1, 1), null);
+        var dto2 = new TaskDTO("Task Two", "Second description", Priority.SOON, null, null, null);
+        var dto3 = new TaskDTO("Task Three", "Third description", Priority.SOMETIME_IN_FUTURE, LocalDate.of(2026, 6, 1), LocalDate.of(2026, 3, 1), null);
 
         var t1 = taskService.createTask(dto1);
         var t2 = taskService.createTask(dto2);

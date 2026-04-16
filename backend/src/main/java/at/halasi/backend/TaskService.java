@@ -28,6 +28,7 @@ public class TaskService {
                 .priority(taskDTO.priority() != null ? taskDTO.priority() : Priority.SOMETIME_IN_FUTURE)
                 .deadline(taskDTO.deadline())
                 .startDate(taskDTO.startDate())
+                .dashboardId(taskDTO.dashboardId())
                 .build();
 
         return taskRepository.save(task);
@@ -43,6 +44,7 @@ public class TaskService {
         task.setPriority(taskDTO.priority());
         task.setDeadline(taskDTO.deadline());
         task.setStartDate(taskDTO.startDate());
+        task.setDashboardId(taskDTO.dashboardId());
         return taskRepository.save(task);
     }
 

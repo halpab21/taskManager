@@ -170,4 +170,124 @@ describe('Task Manager E2E Tests', () => {
       cy.get('.calendar-sidebar h3').should('contain', 'Upcoming Deadlines');
     });
   });
+
+  describe('Edit Task', () => {
+    it('should show edit button on task card hover', () => {
+      cy.get('[data-testid="task-card"]').first().trigger('mouseover');
+      cy.get('[data-testid="edit-task-btn"]').first().should('exist');
+    });
+
+    it('should open modal pre-filled when clicking edit button', () => {
+      cy.get('[data-testid="task-title"]').first().invoke('text').then((originalTitle) => {
+        cy.get('[data-testid="edit-task-btn"]').first().click({ force: true });
+        cy.get('[data-testid="modal-overlay"]').should('be.visible');
+        cy.get('[data-testid="task-title-input"]').should('have.value', originalTitle);
+        cy.get('[data-testid="submit-task-btn"]').should('contain', 'Save Changes');
+        cy.get('[data-testid="cancel-btn"]').click();
+      });
+    });
+
+    it('should save edited task via PUT and update the card', () => {
+      cy.intercept('PUT', 'http://localhost:8080/task/*').as('updateTask');
+
+      cy.get('[data-testid="edit-task-btn"]').first().click({ force: true });
+      cy.get('[data-testid="task-title-input"]').clear().type('Updated Task Title');
+      cy.get('[data-testid="submit-task-btn"]').click();
+
+      cy.wait('@updateTask').then((interception) => {
+        expect(interception.response.statusCode).to.eq(200);
+        expect(interception.request.body).to.have.property('title', 'Updated Task Title');
+      });
+
+      cy.get('[data-testid="task-card"]').should('contain', 'Updated Task Title');
+    });
+  });
+
+  describe('Multiple Dashboards', () => {
+    it('should show the + button in the sidebar', () => {
+      cy.get('[data-testid="add-dashboard-btn"]').should('be.visible');
+    });
+
+    it('should show name input after clicking +', () => {
+      cy.get('[data-testid="add-dashboard-btn"]').click();
+      cy.get('[data-testid="dashboard-name-input"]').should('be.visible');
+    });
+
+    it('should create a named dashboard and navigate to it', () => {
+      cy.intercept('POST', 'http://localhost:8080/dashboard').as('createDashboard');
+
+      cy.get('[data-testid="add-dashboard-btn"]').click();
+      cy.get('[data-testid="dashboard-name-input"]').type('My Test Board');
+      cy.contains('button', 'Create').click();
+
+      cy.wait('@createDashboard').then((interception) => {
+        expect(interception.response.statusCode).to.eq(200);
+        expect(interception.request.body).to.have.property('name', 'My Test Board');
+      });
+
+      cy.url().should('include', '/dashboard/');
+      cy.get('[data-testid="dashboard-list-item"]').should('contain', 'My Test Board');
+    });
+
+    it('should show group dashboard toggle in create form', () => {
+      cy.get('[data-testid="add-dashboard-btn"]').click();
+      cy.get('[data-testid="group-dashboard-toggle"]').should('exist');
+    });
+  });
+
+  describe('Group Dashboards', () => {
+    it('should display share code after creating a group dashboard', () => {
+      cy.intercept('POST', 'http://localhost:8080/dashboard').as('createDashboard');
+
+      cy.get('[data-testid="add-dashboard-btn"]').click();
+      cy.get('[data-testid="dashboard-name-input"]').type('Team Board');
+      cy.get('[data-testid="group-dashboard-toggle"]').check();
+      cy.contains('button', 'Create').click();
+
+      cy.wait('@createDashboard').its('response.body.shareCode').should('have.length', 6);
+
+      cy.get('[data-testid="group-badge"]').should('be.visible');
+      cy.get('[data-testid="show-share-code-btn"]').click();
+      cy.get('[data-testid="share-code-display"]').should('be.visible').invoke('text').should('have.length', 6);
+    });
+
+    it('should show join group button in sidebar', () => {
+      cy.get('[data-testid="join-group-btn"]').should('be.visible');
+    });
+
+    it('should show join code input after clicking join group', () => {
+      cy.get('[data-testid="join-group-btn"]').click();
+      cy.get('[data-testid="join-code-input"]').should('be.visible');
+    });
+  });
+
+  describe('Theming', () => {
+    it('should open theme panel from sidebar', () => {
+      cy.get('[data-testid="open-theme-btn"]').click();
+      cy.get('[data-testid="theme-panel"]').should('be.visible');
+    });
+
+    it('should have color pickers for bg and accent', () => {
+      cy.get('[data-testid="open-theme-btn"]').click();
+      cy.get('[data-testid="color-picker-bg"]').should('exist');
+      cy.get('[data-testid="color-picker-accent"]').should('exist');
+    });
+
+    it('should have a reset to default button', () => {
+      cy.get('[data-testid="open-theme-btn"]').click();
+      cy.get('[data-testid="reset-theme-btn"]').should('be.visible').and('contain', 'Reset');
+    });
+
+    it('should persist theme in localStorage after applying', () => {
+      cy.get('[data-testid="open-theme-btn"]').click();
+      cy.get('[data-testid="color-picker-accent"]').invoke('val', '#ff0000').trigger('input').trigger('change');
+      cy.window().its('localStorage').invoke('getItem', 'theme-accent').should('not.be.null');
+    });
+
+    it('should reset theme on reset button click', () => {
+      cy.get('[data-testid="open-theme-btn"]').click();
+      cy.get('[data-testid="reset-theme-btn"]').click();
+      cy.window().its('localStorage').invoke('getItem', 'theme-bg').should('eq', '#0f0a19');
+    });
+  });
 });

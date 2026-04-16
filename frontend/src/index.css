@@ -3,9 +3,15 @@
   line-height: 1.5;
   font-weight: 400;
 
+  /* Themeable custom properties */
+  --bg-primary: #0f0a19;
+  --bg-secondary: #1a1025;
+  --accent-color: #7c3aed;
+  --text-primary: #e9e4f0;
+
   color-scheme: dark;
-  color: #e9e4f0;
-  background-color: #0f0a19;
+  color: var(--text-primary);
+  background-color: var(--bg-primary);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;

@@ -6,6 +6,7 @@ export interface CreatePost {
     priority: Priority;
     deadline: string | null;
     startDate: string | null;
+    dashboardId?: number | null;
 }
 
 export interface Task {
@@ -16,4 +17,12 @@ export interface Task {
     priority: Priority;
     deadline: string | null;
     startDate: string | null;
+    dashboardId?: number | null;
+}
+
+export interface Dashboard {
+    id: number;
+    name: string;
+    isGroup: boolean;
+    shareCode: string | null;
 }

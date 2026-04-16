@@ -125,24 +125,35 @@
     font-size: 0.9rem;
 }
 
-.delete-btn {
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    background: transparent;
-    border: none;
-    font-size: 1.1rem;
-    cursor: pointer;
+.task-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
     opacity: 0;
     transition: opacity 0.2s ease;
-    padding: 4px;
 }
 
-.task-card:hover .delete-btn {
-    opacity: 0.6;
+.task-card:hover .task-actions {
+    opacity: 1;
+}
+
+.edit-btn,
+.delete-btn {
+    background: transparent;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 4px 6px;
+    border-radius: 6px;
+    transition: background 0.2s ease;
+    line-height: 1;
+}
+
+.edit-btn:hover {
+    background: rgba(124, 58, 237, 0.15);
 }
 
 .delete-btn:hover {
-    opacity: 1 !important;
+    background: rgba(239, 68, 68, 0.15);
 }
 
