@@ -133,7 +133,7 @@ describe('Task Manager E2E Tests', () => {
 
     it('should navigate back to dashboard', () => {
       cy.get('.nav-link').contains('Calendar').click();
-      cy.get('.nav-link').contains('Dashboard').click();
+      cy.get('[data-testid="dashboard-list-item"]').first().click();
       cy.url().should('include', '/dashboard/');
       cy.get('h1').should('contain', 'Dashboard');
     });

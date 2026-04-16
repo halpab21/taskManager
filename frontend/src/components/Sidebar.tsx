@@ -103,10 +103,6 @@ export default function Sidebar({ dashboards, setDashboards }: SidebarProps) {
                     <h1>📋 TaskManager</h1>
                 </div>
                 <nav className="sidebar-nav">
-                    <NavLink to="/" end className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
-                        <span className="nav-icon">🏠</span>
-                        <span>Dashboard</span>
-                    </NavLink>
                     <NavLink to="/calendar" className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
                         <span className="nav-icon">📅</span>
                         <span>Calendar</span>
