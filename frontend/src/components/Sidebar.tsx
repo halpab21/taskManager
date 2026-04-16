@@ -12,6 +12,7 @@ export default function Sidebar({ dashboards, setDashboards }: SidebarProps) {
     const [showNameInput, setShowNameInput] = useState(false);
     const [newDashboardName, setNewDashboardName] = useState('');
     const [isGroup, setIsGroup] = useState(false);
+    const [createError, setCreateError] = useState('');
     const [showJoinInput, setShowJoinInput] = useState(false);
     const [joinCode, setJoinCode] = useState('');
     const [joinError, setJoinError] = useState('');
@@ -44,18 +45,25 @@ export default function Sidebar({ dashboards, setDashboards }: SidebarProps) {
     const createDashboard = async () => {
         const name = newDashboardName.trim();
         if (!name) return;
-        const res = await fetch('http://localhost:8080/dashboard', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, isGroup }),
-        });
-        if (res.ok) {
-            const created: Dashboard = await res.json();
-            setDashboards(prev => [...prev, created]);
-            setNewDashboardName('');
-            setIsGroup(false);
-            setShowNameInput(false);
-            navigate(`/dashboard/${created.id}`);
+        setCreateError('');
+        try {
+            const res = await fetch('http://localhost:8080/dashboard', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, isGroup }),
+            });
+            if (res.ok) {
+                const created: Dashboard = await res.json();
+                setDashboards(prev => [...prev, created]);
+                setNewDashboardName('');
+                setIsGroup(false);
+                setShowNameInput(false);
+                navigate(`/dashboard/${created.id}`);
+            } else {
+                setCreateError('Failed to create dashboard');
+            }
+        } catch {
+            setCreateError('Could not reach server');
         }
     };
 
@@ -132,6 +140,7 @@ export default function Sidebar({ dashboards, setDashboards }: SidebarProps) {
                                 />
                                 Group dashboard
                             </label>
+                            {createError && <span className="join-error">{createError}</span>}
                             <button className="btn-create-dashboard" onClick={createDashboard}>Create</button>
                         </div>
                     )}

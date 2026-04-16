@@ -1,3 +1,5 @@
 package at.halasi.backend;
 
-public record DashboardDTO(String name, boolean isGroup) {}
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public record DashboardDTO(String name, @JsonProperty("isGroup") boolean isGroup) {}
