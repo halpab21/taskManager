@@ -2,6 +2,11 @@ describe('Task Manager E2E Tests', () => {
 
   beforeEach(() => {
     cy.visit('http://localhost:5173/');
+    // '/' redirects to /dashboard/:id after async init (auto-create + fetch).
+    // Wait here so the redirect is complete before any test body runs —
+    // prevents in-flight POST /dashboard requests from being captured
+    // by interceptors set up inside tests.
+    cy.url().should('include', '/dashboard/');
   });
 
   describe('Dashboard', () => {
