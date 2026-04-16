@@ -81,11 +81,24 @@ describe('Task Manager E2E Tests', () => {
   });
 
   describe('Task Interactions', () => {
+    beforeEach(() => {
+      // Seed a task directly via the API so these tests don't depend on
+      // Create Task Flow tests and aren't subject to fetchTasks() timing.
+      cy.url().then((url) => {
+        const id = parseInt(url.split('/dashboard/')[1]);
+        cy.request({
+          method: 'POST',
+          url: 'http://localhost:8080/task',
+          body: { title: 'Interaction Test Task', description: 'seeded', priority: 'SOON', deadline: null, startDate: null, dashboardId: id },
+        });
+      });
+      cy.reload();
+      cy.url().should('include', '/dashboard/');
+      cy.get('[data-testid="task-card"]').should('have.length.greaterThan', 0);
+    });
+
     it('should toggle task completion', () => {
       cy.intercept('PATCH', 'http://localhost:8080/task/*/toggle').as('toggleTask');
-
-      // Wait for tasks to finish loading before interacting
-      cy.get('[data-testid="task-card"]').should('have.length.greaterThan', 0);
 
       // Get the title of the first task before toggling
       cy.get('[data-testid="task-title"]').first().invoke('text').then((taskTitle) => {
@@ -100,9 +113,6 @@ describe('Task Manager E2E Tests', () => {
 
     it('should delete a task', () => {
       cy.intercept('DELETE', 'http://localhost:8080/task/*').as('deleteTask');
-
-      // Wait for tasks to finish loading before interacting
-      cy.get('[data-testid="task-card"]').should('have.length.greaterThan', 0);
 
       // Get the title of the task we're about to delete
       cy.get('[data-testid="task-title"]').first().invoke('text').then((titleToDelete) => {
@@ -183,18 +193,28 @@ describe('Task Manager E2E Tests', () => {
   });
 
   describe('Edit Task', () => {
-    it('should show edit button on task card hover', () => {
-      // Wait for tasks to finish loading before interacting
+    beforeEach(() => {
+      // Seed a task directly via the API so these tests don't depend on
+      // Create Task Flow tests and aren't subject to fetchTasks() timing.
+      cy.url().then((url) => {
+        const id = parseInt(url.split('/dashboard/')[1]);
+        cy.request({
+          method: 'POST',
+          url: 'http://localhost:8080/task',
+          body: { title: 'Edit Test Task', description: 'seeded', priority: 'SOON', deadline: null, startDate: null, dashboardId: id },
+        });
+      });
+      cy.reload();
+      cy.url().should('include', '/dashboard/');
       cy.get('[data-testid="task-card"]').should('have.length.greaterThan', 0);
+    });
 
+    it('should show edit button on task card hover', () => {
       cy.get('[data-testid="task-card"]').first().trigger('mouseover');
       cy.get('[data-testid="edit-task-btn"]').first().should('exist');
     });
 
     it('should open modal pre-filled when clicking edit button', () => {
-      // Wait for tasks to finish loading before interacting
-      cy.get('[data-testid="task-card"]').should('have.length.greaterThan', 0);
-
       cy.get('[data-testid="task-title"]').first().invoke('text').then((originalTitle) => {
         cy.get('[data-testid="edit-task-btn"]').first().click({ force: true });
         cy.get('[data-testid="modal-overlay"]').should('be.visible');
@@ -206,9 +226,6 @@ describe('Task Manager E2E Tests', () => {
 
     it('should save edited task via PUT and update the card', () => {
       cy.intercept('PUT', 'http://localhost:8080/task/*').as('updateTask');
-
-      // Wait for tasks to finish loading before interacting
-      cy.get('[data-testid="task-card"]').should('have.length.greaterThan', 0);
 
       cy.get('[data-testid="edit-task-btn"]').first().click({ force: true });
       cy.get('[data-testid="task-title-input"]').clear().type('Updated Task Title');
