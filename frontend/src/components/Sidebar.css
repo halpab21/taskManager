@@ -156,20 +156,32 @@
     letter-spacing: 0.5px;
 }
 
+.dashboard-list-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.dashboard-list-row .nav-link {
+    flex: 1;
+    min-width: 0;
+}
+
 .remove-dashboard-btn {
     background: transparent;
     border: none;
     color: #6b5b7a;
     font-size: 0.8rem;
     cursor: pointer;
-    padding: 2px 4px;
+    padding: 4px 6px;
     border-radius: 4px;
+    flex-shrink: 0;
     opacity: 0;
     transition: opacity 0.2s ease;
     line-height: 1;
 }
 
-.nav-link:hover .remove-dashboard-btn {
+.dashboard-list-row:hover .remove-dashboard-btn {
     opacity: 1;
 }
 

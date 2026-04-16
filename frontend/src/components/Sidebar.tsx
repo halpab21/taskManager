@@ -69,9 +69,7 @@ export default function Sidebar({ dashboards, setDashboards }: SidebarProps) {
         }
     };
 
-    const deleteDashboard = async (id: number, e: React.MouseEvent) => {
-        e.preventDefault();
-        e.stopPropagation();
+    const deleteDashboard = async (id: number) => {
         await fetch(`http://localhost:8080/dashboard/${id}`, { method: 'DELETE' });
         removeMyDashboardId(id);
         setDashboards(prev => prev.filter(d => d.id !== id));
@@ -150,21 +148,22 @@ export default function Sidebar({ dashboards, setDashboards }: SidebarProps) {
                     )}
 
                     {dashboards.map(d => (
-                        <NavLink
-                            key={d.id}
-                            to={`/dashboard/${d.id}`}
-                            className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}
-                            data-testid="dashboard-list-item"
-                        >
-                            <span className="nav-icon">{d.isGroup ? '👥' : '📁'}</span>
-                            <span style={{ flex: 1 }}>{d.name}</span>
-                            {d.isGroup && <span className="group-badge" data-testid="group-badge">Group</span>}
+                        <div key={d.id} className="dashboard-list-row" data-testid="dashboard-list-item">
+                            <NavLink
+                                to={`/dashboard/${d.id}`}
+                                className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}
+                                style={{ flex: 1 }}
+                            >
+                                <span className="nav-icon">{d.isGroup ? '👥' : '📁'}</span>
+                                <span style={{ flex: 1 }}>{d.name}</span>
+                                {d.isGroup && <span className="group-badge" data-testid="group-badge">Group</span>}
+                            </NavLink>
                             <button
                                 className="remove-dashboard-btn"
-                                onClick={(e) => deleteDashboard(d.id, e)}
+                                onClick={() => deleteDashboard(d.id)}
                                 title="Delete dashboard"
                             >✕</button>
-                        </NavLink>
+                        </div>
                     ))}
 
                     <button
