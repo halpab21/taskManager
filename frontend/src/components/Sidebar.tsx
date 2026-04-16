@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import type { Dashboard } from '../interfaces/interface';
+import { saveMyDashboardId, removeMyDashboardId } from '../utils/dashboardStorage';
 import './Sidebar.css';
 
 interface SidebarProps {
@@ -54,6 +55,7 @@ export default function Sidebar({ dashboards, setDashboards }: SidebarProps) {
             });
             if (res.ok) {
                 const created: Dashboard = await res.json();
+                saveMyDashboardId(created.id);
                 setDashboards(prev => [...prev, created]);
                 setNewDashboardName('');
                 setIsGroup(false);
@@ -71,6 +73,7 @@ export default function Sidebar({ dashboards, setDashboards }: SidebarProps) {
         e.preventDefault();
         e.stopPropagation();
         await fetch(`http://localhost:8080/dashboard/${id}`, { method: 'DELETE' });
+        removeMyDashboardId(id);
         setDashboards(prev => prev.filter(d => d.id !== id));
     };
 
@@ -84,6 +87,7 @@ export default function Sidebar({ dashboards, setDashboards }: SidebarProps) {
         });
         if (res.ok) {
             const joined: Dashboard = await res.json();
+            saveMyDashboardId(joined.id);
             setDashboards(prev => prev.some(d => d.id === joined.id) ? prev : [...prev, joined]);
             setJoinCode('');
             setJoinError('');

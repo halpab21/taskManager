@@ -1,21 +1,21 @@
 .sidebar {
     width: 260px;
     min-height: 100vh;
-    background: linear-gradient(180deg, #1a1025 0%, #2d1f3d 100%);
+    background: var(--bg-secondary);
     display: flex;
     flex-direction: column;
-    border-right: 1px solid rgba(138, 43, 226, 0.2);
+    border-right: 1px solid color-mix(in srgb, var(--accent-color) 20%, transparent);
 }
 
 .sidebar-header {
     padding: 24px 20px;
-    border-bottom: 1px solid rgba(138, 43, 226, 0.2);
+    border-bottom: 1px solid color-mix(in srgb, var(--accent-color) 20%, transparent);
 }
 
 .sidebar-header h1 {
     margin: 0;
     font-size: 1.5rem;
-    color: #a855f7;
+    color: var(--accent-color);
     font-weight: 700;
 }
 
@@ -47,14 +47,14 @@
 }
 
 .nav-link:hover {
-    background: rgba(168, 85, 247, 0.1);
+    background: color-mix(in srgb, var(--accent-color) 10%, transparent);
     color: #d8b4fe;
 }
 
 .nav-link.active {
-    background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+    background: var(--accent-color);
     color: white;
-    box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
+    box-shadow: 0 4px 15px color-mix(in srgb, var(--accent-color) 40%, transparent);
 }
 
 .nav-icon {
@@ -75,9 +75,9 @@
 }
 
 .add-dashboard-btn {
-    background: rgba(168, 85, 247, 0.15);
+    background: color-mix(in srgb, var(--accent-color) 15%, transparent);
     border: none;
-    color: #a855f7;
+    color: var(--accent-color);
     font-size: 1.1rem;
     width: 24px;
     height: 24px;
@@ -91,7 +91,7 @@
 }
 
 .add-dashboard-btn:hover {
-    background: rgba(168, 85, 247, 0.3);
+    background: color-mix(in srgb, var(--accent-color) 30%, transparent);
 }
 
 .dashboard-create-form {
@@ -99,17 +99,17 @@
     flex-direction: column;
     gap: 8px;
     padding: 8px 12px;
-    background: rgba(15, 10, 25, 0.4);
+    background: color-mix(in srgb, var(--bg-primary) 40%, transparent);
     border-radius: 10px;
     margin: 0 4px;
 }
 
 .dashboard-name-input {
     padding: 8px 12px;
-    background: rgba(15, 10, 25, 0.6);
-    border: 1px solid rgba(138, 43, 226, 0.3);
+    background: color-mix(in srgb, var(--bg-primary) 60%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent-color) 30%, transparent);
     border-radius: 8px;
-    color: #e9e4f0;
+    color: var(--text-primary);
     font-size: 0.9rem;
     width: 100%;
     box-sizing: border-box;
@@ -117,7 +117,7 @@
 
 .dashboard-name-input:focus {
     outline: none;
-    border-color: #7c3aed;
+    border-color: var(--accent-color);
 }
 
 .group-toggle {
@@ -131,7 +131,7 @@
 
 .btn-create-dashboard {
     padding: 7px 14px;
-    background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+    background: var(--accent-color);
     border: none;
     border-radius: 8px;
     color: white;
@@ -205,8 +205,8 @@
 .theme-btn {
     width: 100%;
     padding: 10px;
-    background: rgba(138, 43, 226, 0.1);
-    border: 1px solid rgba(138, 43, 226, 0.2);
+    background: color-mix(in srgb, var(--accent-color) 10%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent-color) 20%, transparent);
     border-radius: 10px;
     color: #b4a5c7;
     font-size: 0.9rem;
@@ -215,7 +215,7 @@
 }
 
 .theme-btn:hover {
-    background: rgba(138, 43, 226, 0.2);
+    background: color-mix(in srgb, var(--accent-color) 20%, transparent);
     color: #d8b4fe;
 }
 
@@ -225,8 +225,8 @@
     left: 260px;
     bottom: 0;
     width: 240px;
-    background: linear-gradient(135deg, #2d2040 0%, #1f1a2e 100%);
-    border: 1px solid rgba(138, 43, 226, 0.3);
+    background: var(--bg-secondary);
+    border: 1px solid color-mix(in srgb, var(--accent-color) 30%, transparent);
     border-radius: 0 16px 0 0;
     box-shadow: 4px -4px 20px rgba(0,0,0,0.4);
     z-index: 500;

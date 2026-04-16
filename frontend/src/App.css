@@ -6,8 +6,8 @@
 
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: linear-gradient(135deg, #0f0a19 0%, #1a1025 100%);
-    color: #e9e4f0;
+    background: var(--bg-primary);
+    color: var(--text-primary);
     min-height: 100vh;
 }
 
@@ -19,7 +19,7 @@ body {
 .main-content {
     flex: 1;
     overflow-y: auto;
-    background: linear-gradient(180deg, #0f0a19 0%, #150d20 100%);
+    background: var(--bg-primary);
 }
 
 /* Scrollbar styling */
@@ -29,31 +29,30 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-    background: rgba(15, 10, 25, 0.5);
+    background: color-mix(in srgb, var(--bg-primary) 50%, transparent);
 }
 
 ::-webkit-scrollbar-thumb {
-    background: rgba(124, 58, 237, 0.4);
+    background: color-mix(in srgb, var(--accent-color) 40%, transparent);
     border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: rgba(124, 58, 237, 0.6);
+    background: color-mix(in srgb, var(--accent-color) 60%, transparent);
 }
 
 /* Selection color */
 ::selection {
-    background: rgba(124, 58, 237, 0.4);
-    color: #e9e4f0;
+    background: color-mix(in srgb, var(--accent-color) 40%, transparent);
+    color: var(--text-primary);
 }
 
 /* Focus styles */
 :focus-visible {
-    outline: 2px solid #7c3aed;
+    outline: 2px solid var(--accent-color);
     outline-offset: 2px;
 }
 
-/* Subtitle styles */
 .subtitle {
     color: #9d8bb0;
     font-size: 1rem;
