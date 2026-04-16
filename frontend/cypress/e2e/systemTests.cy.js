@@ -84,6 +84,9 @@ describe('Task Manager E2E Tests', () => {
     it('should toggle task completion', () => {
       cy.intercept('PATCH', 'http://localhost:8080/task/*/toggle').as('toggleTask');
 
+      // Wait for tasks to finish loading before interacting
+      cy.get('[data-testid="task-card"]').should('have.length.greaterThan', 0);
+
       // Get the title of the first task before toggling
       cy.get('[data-testid="task-title"]').first().invoke('text').then((taskTitle) => {
         // Click the first task's checkbox
@@ -97,6 +100,9 @@ describe('Task Manager E2E Tests', () => {
 
     it('should delete a task', () => {
       cy.intercept('DELETE', 'http://localhost:8080/task/*').as('deleteTask');
+
+      // Wait for tasks to finish loading before interacting
+      cy.get('[data-testid="task-card"]').should('have.length.greaterThan', 0);
 
       // Get the title of the task we're about to delete
       cy.get('[data-testid="task-title"]').first().invoke('text').then((titleToDelete) => {
@@ -178,11 +184,17 @@ describe('Task Manager E2E Tests', () => {
 
   describe('Edit Task', () => {
     it('should show edit button on task card hover', () => {
+      // Wait for tasks to finish loading before interacting
+      cy.get('[data-testid="task-card"]').should('have.length.greaterThan', 0);
+
       cy.get('[data-testid="task-card"]').first().trigger('mouseover');
       cy.get('[data-testid="edit-task-btn"]').first().should('exist');
     });
 
     it('should open modal pre-filled when clicking edit button', () => {
+      // Wait for tasks to finish loading before interacting
+      cy.get('[data-testid="task-card"]').should('have.length.greaterThan', 0);
+
       cy.get('[data-testid="task-title"]').first().invoke('text').then((originalTitle) => {
         cy.get('[data-testid="edit-task-btn"]').first().click({ force: true });
         cy.get('[data-testid="modal-overlay"]').should('be.visible');
@@ -194,6 +206,9 @@ describe('Task Manager E2E Tests', () => {
 
     it('should save edited task via PUT and update the card', () => {
       cy.intercept('PUT', 'http://localhost:8080/task/*').as('updateTask');
+
+      // Wait for tasks to finish loading before interacting
+      cy.get('[data-testid="task-card"]').should('have.length.greaterThan', 0);
 
       cy.get('[data-testid="edit-task-btn"]').first().click({ force: true });
       cy.get('[data-testid="task-title-input"]').clear().type('Updated Task Title');
